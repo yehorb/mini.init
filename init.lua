@@ -74,4 +74,12 @@ vim.api.nvim_create_autocmd("InsertEnter", {
   end
 })
 
+vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile", "BufWritePre" }, {
+  group=augroup,
+  callback=function()
+    require("mini.diff").setup()
+    require("mini.git").setup()
+  end
+})
+
 -- vim: ts=2 sts=2 sw=2 et
