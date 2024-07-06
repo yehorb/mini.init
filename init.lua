@@ -52,7 +52,7 @@ now(function()
   vim.keymap.set({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { expr = true })
   vim.keymap.set({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { expr = true })
 
-  vim.keymap.set("n", "<esc>", "<Cmd>noh<CR><Esc>", { desc = "Escape and clear hlsearch" })
+  vim.keymap.set("n", "<Esc>", "<Cmd>noh<CR><Esc>", { desc = "Escape and clear hlsearch" })
 end)
 
 -- [[ Colorscheme ]]
