@@ -16,7 +16,7 @@ end
 -- Set up 'mini.deps' (customize to your liking)
 require('mini.deps').setup({ path = { package = path_package } })
 
-local now = MiniDeps.now
+local add, now = MiniDeps.add, MiniDeps.now
 
 -- [[ Basic options ]]
 
@@ -53,6 +53,13 @@ now(function()
   vim.keymap.set({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { expr = true })
 
   vim.keymap.set("n", "<esc>", "<Cmd>noh<CR><Esc>", { desc = "Escape and clear hlsearch" })
+end)
+
+-- [[ Colorscheme ]]
+
+now(function()
+  add({source="folke/tokyonight.nvim"})
+  vim.cmd([[colorscheme tokyonight]])
 end)
 
 -- vim: ts=2 sts=2 sw=2 et
