@@ -54,3 +54,5 @@ now(function()
 
   vim.keymap.set("n", "<esc>", "<Cmd>noh<CR><Esc>", { desc = "Escape and clear hlsearch" })
 end)
+
+-- vim: ts=2 sts=2 sw=2 et
