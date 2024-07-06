@@ -58,7 +58,7 @@ end)
 -- [[ Colorscheme ]]
 
 now(function()
-  add({source="folke/tokyonight.nvim"})
+  add("folke/tokyonight.nvim")
   vim.cmd([[colorscheme tokyonight]])
 end)
 
@@ -69,7 +69,7 @@ local augroup = vim.api.nvim_create_augroup("Init", {})
 vim.api.nvim_create_autocmd("InsertEnter", {
   group=augroup,
   callback=function()
-    add({source="max397574/better-escape.nvim"})
+    add("max397574/better-escape.nvim")
     require("better_escape").setup()
   end
 })
