@@ -81,6 +81,18 @@ vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile", "BufWritePre" }, {
   callback=function()
     require("mini.diff").setup()
     require("mini.git").setup()
+    require("mini.files").setup {
+      mappings = {
+        go_in       = 'L',
+        go_in_plus  = 'l',
+        go_out      = 'H',
+        go_out_plus = 'h',
+      }
+    }
+    vim.keymap.set("n", "-", function()
+      MiniFiles.open(vim.api.nvim_buf_get_name(0), false)
+      MiniFiles.reveal_cwd()
+    end)
   end
 })
 
