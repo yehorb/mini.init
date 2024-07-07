@@ -16,7 +16,7 @@ end
 -- Set up 'mini.deps' (customize to your liking)
 require('mini.deps').setup({ path = { package = path_package } })
 
-local add, now = MiniDeps.add, MiniDeps.now
+local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
 
 -- [[ Basic options ]]
 
@@ -71,27 +71,31 @@ local augroup = vim.api.nvim_create_augroup("Init", {})
 vim.api.nvim_create_autocmd("InsertEnter", {
   group=augroup,
   callback=function()
-    add("max397574/better-escape.nvim")
-    require("better_escape").setup()
+    later(function()
+      add("max397574/better-escape.nvim")
+      require("better_escape").setup()
+    end)
   end
 })
 
 vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile", "BufWritePre" }, {
   group=augroup,
   callback=function()
-    require("mini.diff").setup()
-    require("mini.git").setup()
-    require("mini.files").setup {
-      mappings = {
-        go_in       = 'L',
-        go_in_plus  = 'l',
-        go_out      = 'H',
-        go_out_plus = 'h',
+    later(require("mini.diff").setup)
+    later(require("mini.git").setup)
+    later(function()
+      require("mini.files").setup {
+        mappings = {
+          go_in       = 'L',
+          go_in_plus  = 'l',
+          go_out      = 'H',
+          go_out_plus = 'h',
+        }
       }
-    }
-    vim.keymap.set("n", "-", function()
-      MiniFiles.open(vim.api.nvim_buf_get_name(0), false)
-      MiniFiles.reveal_cwd()
+      vim.keymap.set("n", "-", function()
+        MiniFiles.open(vim.api.nvim_buf_get_name(0), false)
+        MiniFiles.reveal_cwd()
+      end)
     end)
   end
 })
