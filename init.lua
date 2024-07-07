@@ -1,20 +1,23 @@
 -- [[ Install `mini.nvim` ]]
 -- Clone 'mini.nvim' manually in a way that it gets managed by 'mini.deps'
-local path_package = vim.fn.stdpath('data') .. '/site/'
-local mini_path = path_package .. 'pack/deps/start/mini.nvim'
+local path_package = vim.fn.stdpath "data" .. "/site/"
+local mini_path = path_package .. "pack/deps/start/mini.nvim"
 if not vim.loop.fs_stat(mini_path) then
-  vim.cmd('echo "Installing `mini.nvim`" | redraw')
+  vim.cmd 'echo "Installing `mini.nvim`" | redraw'
   local clone_cmd = {
-    'git', 'clone', '--filter=blob:none',
-    'https://github.com/echasnovski/mini.nvim', mini_path
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/echasnovski/mini.nvim",
+    mini_path,
   }
   vim.fn.system(clone_cmd)
-  vim.cmd('packadd mini.nvim | helptags ALL')
-  vim.cmd('echo "Installed `mini.nvim`" | redraw')
+  vim.cmd "packadd mini.nvim | helptags ALL"
+  vim.cmd 'echo "Installed `mini.nvim`" | redraw'
 end
 
 -- Set up 'mini.deps' (customize to your liking)
-require('mini.deps').setup({ path = { package = path_package } })
+require("mini.deps").setup { path = { package = path_package } }
 
 local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
 
@@ -43,7 +46,7 @@ now(function()
 
   vim.o.scrolloff = 4
 
-  vim.cmd([[filetype plugin indent on]])
+  vim.cmd [[filetype plugin indent on]]
 end)
 
 -- [[ Basic keymaps ]]
@@ -60,8 +63,8 @@ end)
 -- [[ Colorscheme ]]
 
 now(function()
-  add("folke/tokyonight.nvim")
-  vim.cmd([[colorscheme tokyonight]])
+  add "folke/tokyonight.nvim"
+  vim.cmd [[colorscheme tokyonight]]
 end)
 
 -- [[ Lazy loading plugins ]]
@@ -69,35 +72,35 @@ end)
 local augroup = vim.api.nvim_create_augroup("Init", {})
 
 vim.api.nvim_create_autocmd("InsertEnter", {
-  group=augroup,
-  callback=function()
+  group = augroup,
+  callback = function()
     later(function()
-      add("max397574/better-escape.nvim")
+      add "max397574/better-escape.nvim"
       require("better_escape").setup()
     end)
-  end
+  end,
 })
 
 vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile", "BufWritePre" }, {
-  group=augroup,
-  callback=function()
+  group = augroup,
+  callback = function()
     later(require("mini.diff").setup)
     later(require("mini.git").setup)
     later(function()
       require("mini.files").setup {
         mappings = {
-          go_in       = 'L',
-          go_in_plus  = 'l',
-          go_out      = 'H',
-          go_out_plus = 'h',
-        }
+          go_in = "L",
+          go_in_plus = "l",
+          go_out = "H",
+          go_out_plus = "h",
+        },
       }
       vim.keymap.set("n", "-", function()
         MiniFiles.open(vim.api.nvim_buf_get_name(0), false)
         MiniFiles.reveal_cwd()
       end)
     end)
-  end
+  end,
 })
 
 -- vim: ts=2 sts=2 sw=2 et
