@@ -53,6 +53,8 @@ now(function()
   vim.keymap.set({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { expr = true })
 
   vim.keymap.set("n", "<Esc>", "<Cmd>noh<CR><Esc>", { desc = "Escape and clear hlsearch" })
+
+  vim.keymap.set("n", "vv", "<C-v>", { desc = "Enter blockwise Visual mode" })
 end)
 
 -- [[ Colorscheme ]]
