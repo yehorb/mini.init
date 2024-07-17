@@ -30,24 +30,24 @@ now(function()
   vim.g.mapleader = " "
   vim.g.maplocalleader = "\\"
 
-  vim.o.list = true
-  vim.opt.listchars = { eol = "␤", tab = "→ ", trail = "␠", nbsp = "␣" }
+  vim.o.ignorecase = true
+  vim.o.smartcase = true
 
   vim.o.linebreak = true
   vim.o.breakindent = true
   vim.o.showbreak = "␂"
 
+  vim.o.list = true
+  vim.opt.listchars = { eol = "␤", tab = "→ ", trail = "␠", nbsp = "␣" }
+
   vim.o.number = true
   vim.o.relativenumber = true
+
+  vim.o.scrolloff = 4
 
   vim.o.shiftwidth = 4
   vim.o.tabstop = 4
   vim.o.expandtab = true
-
-  vim.o.ignorecase = true
-  vim.o.smartcase = true
-
-  vim.o.scrolloff = 4
 
   vim.cmd [[filetype plugin indent on]]
 end)
