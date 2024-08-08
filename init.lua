@@ -1,5 +1,18 @@
 pcall(vim.loader.enable)
 
+-- [[ Basic Keymaps ]]
+vim.keymap.set({ 'n', 'v' }, 'Y', '"+y', { desc = 'Yank into the OS clipboard' })
+
+-- [[ Basic Autocommands ]]
+-- Nvim will always call a Lua function with a single table containing information
+-- about the triggered autocommand. This means that if your callback itself takes
+-- an (even optional) argument, you must wrap it in `function() end` to avoid an error.
+vim.api.nvim_create_autocmd('TextYankPost', {
+  group = vim.api.nvim_create_augroup('vimrc', { clear = true }),
+  callback = function() vim.highlight.on_yank() end,
+  desc = 'Briefly highlight yanked text',
+})
+
 -- [[ Install 'mini.deps' plugin manager ]]
 -- Clone 'mini.nvim' manually in a way that it gets managed by 'mini.deps'
 local path_package = vim.fn.stdpath('data') .. '/site/'
