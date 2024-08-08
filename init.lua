@@ -15,4 +15,12 @@ end
 
 -- Set up 'mini.deps' (customize to your liking)
 require('mini.deps').setup({ path = { package = path_package } })
+
+add, now = MiniDeps.add, MiniDeps.now
+
+-- [[ Step one - load plugins with UI necessary to make initial screen draw ]]
+now(function()
+  add 'shaunsingh/nord.nvim'
+  vim.cmd 'colorscheme nord'
+end)
 -- vim: ts=2 sts=2 sw=2 et
