@@ -9,6 +9,9 @@ vim.opt.listchars = { eol = "␤", tab = "→ ", trail = "␠", nbsp = "␣" }
 -- item or continue typing if I don't see the desired option.
 vim.o.completeopt = 'menuone,preview,noselect'
 
+-- The default value `auto` causes signcolumn to flicker during analysis.
+vim.o.signcolumn = 'yes'
+
 if vim.uv.os_uname().version:match 'Windows' then
   vim.cmd [[
   let &shell = executable('pwsh') ? 'pwsh' : 'powershell'
