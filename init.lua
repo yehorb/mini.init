@@ -20,6 +20,10 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 })
 
 -- [[ Install 'mini.deps' plugin manager ]]
+-- I prefer 'mini.deps' over 'lazy.nvim'. I find the simpler and more explicit plugin management
+-- provided by 'mini.deps' to be more enjoyable to work with. Manually managing the complexity of
+-- loading modules in the correct order and at the right time is certainly not for everyone, but I
+-- find it much easier to reason about and build upon.
 -- Clone 'mini.nvim' manually in a way that it gets managed by 'mini.deps'
 local path_package = vim.fn.stdpath('data') .. '/site/'
 local mini_path = path_package .. 'pack/deps/start/mini.nvim'
