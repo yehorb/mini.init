@@ -30,6 +30,7 @@ vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper win
 vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
 
 vim.keymap.set({ "n", "v" }, "Y", '"+y', { desc = "Yank into the OS clipboard" })
+vim.keymap.set({ "n", "v" }, "+", '"+p', { desc = "Paste form the OS clipboard" })
 
 -- [[ Basic Autocommands ]]
 -- Nvim will always call a Lua function with a single table containing information
