@@ -63,7 +63,7 @@ end
 -- Set up 'mini.deps' (customize to your liking)
 require('mini.deps').setup({ path = { package = path_package } })
 
-add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
+local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
 
 -- [[ Step one - load plugins with UI necessary to make initial screen draw ]]
 now(function()
