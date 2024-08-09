@@ -9,6 +9,16 @@ vim.opt.listchars = { eol = "␤", tab = "→ ", trail = "␠", nbsp = "␣" }
 -- item or continue typing if I don't see the desired option.
 vim.o.completeopt = 'menuone,preview,noselect'
 
+if vim.uv.os_uname().version:match 'Windows' then
+  vim.cmd [[
+  let &shell = executable('pwsh') ? 'pwsh' : 'powershell'
+  let &shellcmdflag = '-NoLogo -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.UTF8Encoding]::new();$PSDefaultParameterValues[''Out-File:Encoding'']=''utf8'';Remove-Alias -Force -ErrorAction SilentlyContinue tee;'
+  let &shellredir = '2>&1 | %%{ "$_" } | Out-File %s; exit $LastExitCode'
+  let &shellpipe  = '2>&1 | %%{ "$_" } | tee %s; exit $LastExitCode'
+  set shellquote= shellxquote=
+  ]]
+end
+
 -- [[ Basic Keymaps ]]
 -- Keybinds to make split navigation easier.
 vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
