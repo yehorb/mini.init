@@ -69,7 +69,7 @@ local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
 now(function()
   add 'shaunsingh/nord.nvim'
   vim.cmd 'colorscheme nord'
-  vim.cmd 'highlight! link Whitespace Error' -- Highlight nonprinting characters
+  vim.cmd 'highlight! link Whitespace DiagnosticError' -- Highlight nonprinting characters
 end)
 
 -- [[ Step two - load other plugins ]]
