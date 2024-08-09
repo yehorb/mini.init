@@ -109,4 +109,14 @@ later(function()
   vim.cmd 'doautocmd lspconfig FileType'
 end)
 
+later(function()
+  add "stevearc/conform.nvim"
+  require("conform").setup {
+    formatters_by_ft = {
+      lua = { "stylua" },
+    },
+    format_on_save = {},
+  }
+end)
+
 -- vim: ts=2 sts=2 sw=2 et
