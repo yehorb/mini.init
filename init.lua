@@ -4,6 +4,11 @@ pcall(vim.loader.enable)
 vim.o.list = true
 vim.opt.listchars = { eol = "␤", tab = "→ ", trail = "␠", nbsp = "␣" }
 
+-- The initial popup menu is mostly used for preview and sanity checks. As I continue
+-- typing, fewer options become available, allowing me to either select a completion
+-- item or continue typing if I don't see the desired option.
+vim.o.completeopt = 'menuone,preview,noselect'
+
 -- [[ Basic Keymaps ]]
 -- Keybinds to make split navigation easier.
 vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
