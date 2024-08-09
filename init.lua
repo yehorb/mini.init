@@ -79,4 +79,34 @@ end)
 later(function() require('mini.diff').setup() end)
 later(function() require('mini.git').setup() end)
 
+later(function()
+  add('neovim/nvim-lspconfig')
+  local lspconfig = require('lspconfig')
+  lspconfig.lua_ls.setup {
+    -- The default `root_dir` checks for Lua configuration files, the presence of the `lua/`
+    -- directory, and only then for the `.git` directory. It finds my `Projects` directory
+    -- before locating the actual project root, as I have a `lua/` directory for all my
+    -- Lua projects. I find that only looking for the `.git` directory is more consistent.
+    root_dir = lspconfig.util.find_git_ancestor,
+    settings = {
+      Lua = {
+        runtime = {
+          version = 'LuaJIT',
+          path = vim.split(package.path, ';'),
+        },
+        workspace = {
+          checkThirdParty = false,
+          library = { vim.env.VIMRUNTIME }
+        },
+        telemetry = {
+          enable = false,
+        },
+      },
+    },
+  }
+  -- Manually trigger `lspconfig` autocommands, as `later()` defers `lspconfig.server.setup()`.
+  -- If not triggered, an LSP client will not automatically attach to a buffer.
+  vim.cmd 'doautocmd lspconfig FileType'
+end)
+
 -- vim: ts=2 sts=2 sw=2 et
