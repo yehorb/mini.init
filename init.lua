@@ -110,6 +110,7 @@ later(function()
   }
   -- Manually trigger `lspconfig` autocommands, as `later()` defers `lspconfig.server.setup()`.
   -- If not triggered, an LSP client will not automatically attach to a buffer.
+  -- https://github.com/echasnovski/mini.nvim/issues/689#issuecomment-1939509494
   vim.cmd "doautocmd lspconfig FileType"
 end)
 
