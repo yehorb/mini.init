@@ -1,6 +1,10 @@
 pcall(vim.loader.enable)
 
 -- [[ Setting options ]]
+vim.o.number = true
+
+vim.o.undofile = true
+
 vim.o.list = true
 vim.opt.listchars = { eol = "␤", tab = "→ ", trail = "␠", nbsp = "␣" }
 
