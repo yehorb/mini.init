@@ -112,10 +112,25 @@ later(function()
       },
     },
   }
-  -- Manually trigger `lspconfig` autocommands, as `later()` defers `lspconfig.server.setup()`.
-  -- If not triggered, an LSP client will not automatically attach to a buffer.
-  -- https://github.com/echasnovski/mini.nvim/issues/689#issuecomment-1939509494
-  vim.cmd "doautocmd lspconfig FileType"
+end)
+
+later(function()
+  add {
+    source = "folke/lazydev.nvim",
+    depends = { "Bilal2453/luvit-meta" },
+  }
+  vim.api.nvim_create_autocmd("FileType", {
+    group = vim.api.nvim_create_augroup("vimrc", { clear = true }),
+    pattern = "lua",
+    callback = function()
+      require("lazydev").setup {
+        library = {
+          { path = "luvit-meta/library", words = { "vim%.uv" } },
+        },
+      }
+    end,
+    desc = "Setup lazydev",
+  })
 end)
 
 later(function()
@@ -126,6 +141,14 @@ later(function()
     },
     format_on_save = {},
   }
+end)
+
+later(function()
+  -- Manually trigger `lspconfig` autocommands, as `later()` defers `lspconfig.server.setup()`.
+  -- If not triggered, an LSP client will not automatically attach to a buffer.
+  -- https://github.com/echasnovski/mini.nvim/issues/689#issuecomment-1939509494
+  vim.cmd "doautocmd lspconfig FileType"
+  vim.cmd "doautocmd vimrc FileType"
 end)
 
 -- vim: ts=2 sts=2 sw=2 et
