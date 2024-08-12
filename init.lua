@@ -88,7 +88,20 @@ later(function() require("mini.diff").setup() end)
 later(function() require("mini.git").setup() end)
 
 later(function()
-  add "neovim/nvim-lspconfig"
+  add {
+    source = "neovim/nvim-lspconfig",
+    depends = {
+      "j-hui/fidget.nvim",
+      "williamboman/mason-lspconfig.nvim",
+      "williamboman/mason.nvim",
+    },
+  }
+  require("fidget").setup {}
+
+  local path = require "mason-core.path"
+  require("mason").setup { install_root_dir = path.concat { os.getenv "USERPROFILE", "Tools", "mason" } }
+  require("mason-lspconfig").setup()
+
   local lspconfig = require "lspconfig"
   lspconfig.lua_ls.setup {
     -- The default `root_dir` checks for Lua configuration files, the presence of the `lua/`
