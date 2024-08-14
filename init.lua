@@ -130,7 +130,7 @@ later(function()
   require("fidget").setup {}
 
   local path = require "mason-core.path"
-  require("mason").setup { install_root_dir = path.concat { os.getenv "USERPROFILE", "Tools", "mason" } }
+  require("mason").setup { install_root_dir = path.concat { vim.env.USERPROFILE or vim.env.HOME, "Tools", "mason" } }
   require("mason-lspconfig").setup()
 
   local lspconfig = require "lspconfig"
