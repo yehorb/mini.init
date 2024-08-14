@@ -125,6 +125,8 @@ later(function()
       },
     },
   }
+  lspconfig.pyright.setup {}
+  lspconfig.ruff_lsp.setup {}
 end)
 
 later(function()
@@ -151,6 +153,7 @@ later(function()
   require("conform").setup {
     formatters_by_ft = {
       lua = { "stylua" },
+      python = { "black" },
     },
     format_on_save = {},
   }
