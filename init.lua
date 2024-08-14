@@ -5,6 +5,9 @@ vim.o.number = true
 
 vim.o.undofile = true
 
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+
 vim.o.list = true
 vim.opt.listchars = { eol = "␤", tab = "→ ", trail = "␠", nbsp = "␣" }
 
