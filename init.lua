@@ -92,6 +92,34 @@ later(function() require("mini.git").setup() end)
 
 later(function()
   add {
+    source = "nvim-treesitter/nvim-treesitter",
+    hooks = {
+      post_checkout = function()
+        local install = require "nvim-treesitter.install"
+        local shell = require "nvim-treesitter.shell_command_selectors"
+        local cc = shell.select_executable(install.compilers)
+        if cc then vim.cmd "TSUpdate" end
+      end,
+    },
+  }
+  add "nvim-treesitter/nvim-treesitter-textobjects"
+  add "nvim-treesitter/playground"
+  require("nvim-treesitter.install").prefer_git = false
+  require("nvim-treesitter.configs").setup { ---@diagnostic disable-line:missing-fields
+    textobjects = {
+      select = {
+        enable = true,
+        keymaps = {
+          ["af"] = "@function.outer",
+          ["if"] = "@function.inner",
+        },
+      },
+    },
+  }
+end)
+
+later(function()
+  add {
     source = "neovim/nvim-lspconfig",
     depends = {
       "j-hui/fidget.nvim",
@@ -171,9 +199,9 @@ end)
 later(function()
   -- Manually trigger `lspconfig` autocommands, as `later()` defers `lspconfig.server.setup()`.
   -- If not triggered, an LSP client will not automatically attach to a buffer.
+  -- Treesitter also does not start properly.
   -- https://github.com/echasnovski/mini.nvim/issues/689#issuecomment-1939509494
-  vim.cmd "doautocmd lspconfig FileType"
-  vim.cmd "doautocmd vimrc FileType"
+  vim.cmd "doautocmd FileType"
 end)
 
 -- vim: ts=2 sts=2 sw=2 et
