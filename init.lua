@@ -164,7 +164,7 @@ later(function()
       },
     },
   }
-  lspconfig.pyright.setup {}
+  lspconfig.basedpyright.setup {}
   lspconfig.ruff_lsp.setup {}
 end)
 
