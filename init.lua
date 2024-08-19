@@ -76,6 +76,12 @@ require("mini.deps").setup { path = { package = path_package } }
 
 local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
 
+now(function()
+  for _, disable in ipairs { "gzip", "netrwPlugin", "tarPlugin", "tohtml", "tutor", "zipPlugin" } do
+    vim.g["loaded_" .. disable] = 0
+  end
+end)
+
 -- [[ Step one - load plugins with UI necessary to make initial screen draw ]]
 now(function()
   add "shaunsingh/nord.nvim"
