@@ -39,6 +39,8 @@ vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right win
 vim.keymap.set({ "n", "v" }, "Y", '"+y', { desc = "Yank into the OS clipboard" })
 vim.keymap.set({ "n", "v" }, "+", '"+p', { desc = "Paste form the OS clipboard" })
 
+vim.keymap.set("n", "<Esc>", "<Cmd>nohlsearch<CR><Esc>", { desc = "Clear 'hlsearch' using <Esc>" })
+
 -- [[ Basic Autocommands ]]
 -- Nvim will always call a Lua function with a single table containing information
 -- about the triggered autocommand. This means that if your callback itself takes
