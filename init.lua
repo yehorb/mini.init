@@ -50,8 +50,9 @@ vim.keymap.set("n", "<C-p>", ":find ", { desc = "Invoke the file search" })
 -- Nvim will always call a Lua function with a single table containing information
 -- about the triggered autocommand. This means that if your callback itself takes
 -- an (even optional) argument, you must wrap it in `function() end` to avoid an error.
+local augroup = vim.api.nvim_create_augroup("vimrc", { clear = true })
 vim.api.nvim_create_autocmd("TextYankPost", {
-  group = vim.api.nvim_create_augroup("vimrc", { clear = true }),
+  group = augroup,
   callback = function() vim.highlight.on_yank() end,
   desc = "Briefly highlight yanked text",
 })
@@ -179,7 +180,7 @@ later(function()
     depends = { "Bilal2453/luvit-meta" },
   }
   vim.api.nvim_create_autocmd("FileType", {
-    group = vim.api.nvim_create_augroup("vimrc", { clear = true }),
+    group = augroup,
     pattern = "lua",
     callback = function()
       require("lazydev").setup {
