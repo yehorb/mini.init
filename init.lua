@@ -41,6 +41,11 @@ vim.keymap.set({ "n", "v" }, "+", '"+p', { desc = "Paste form the OS clipboard" 
 
 vim.keymap.set("n", "<Esc>", "<Cmd>nohlsearch<CR><Esc>", { desc = "Clear 'hlsearch' using <Esc>" })
 
+-- Builtin search tools
+vim.opt.path:append "**"
+vim.keymap.set("n", "<C-b>", ":buffer ", { desc = "Invoke the buffer search" })
+vim.keymap.set("n", "<C-p>", ":find ", { desc = "Invoke the file search" })
+
 -- [[ Basic Autocommands ]]
 -- Nvim will always call a Lua function with a single table containing information
 -- about the triggered autocommand. This means that if your callback itself takes
