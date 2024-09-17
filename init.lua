@@ -29,6 +29,11 @@ if vim.uv.os_uname().version:match "Windows" then
   ]]
 end
 
+-- Switch to ukrainian using *i_CTRL-^*
+vim.o.keymap = "ukrainian-jcuken"
+vim.o.iminsert = 0
+vim.o.imsearch = 0
+
 -- [[ Basic Keymaps ]]
 -- Keybinds to make split navigation easier.
 vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
