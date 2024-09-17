@@ -232,6 +232,17 @@ require("lazy").setup {
         { "-", "<Cmd>Oil<CR>", desc = "Open parent directory" },
       },
     },
+
+    {
+      "folke/zen-mode.nvim",
+      opts = {},
+      event = "VeryLazy",
+      keys = {
+        { "<C-w>z", function() require("zen-mode").toggle() end, desc = "Toggle *Zen Mode*" },
+        { "<C-z>", function() require("zen-mode").toggle() end, desc = "Toggle *Zen Mode*" },
+      },
+    },
+    { "folke/twilight.nvim", lazy = true },
   },
   -- colorscheme that will be used when installing plugins.
   install = { colorscheme = { "habamax" } },
