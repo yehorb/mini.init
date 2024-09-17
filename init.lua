@@ -151,7 +151,7 @@ require("lazy").setup {
         end
         vim.cmd [[TSUpdate]]
       end,
-      event = "VeryLazy",
+      event = { "BufReadPost", "BufNewFile", "BufWritePre", "VeryLazy" },
     },
 
     { "j-hui/fidget.nvim", opts = {}, event = "VeryLazy" },
@@ -192,7 +192,7 @@ require("lazy").setup {
         lspconfig.basedpyright.setup {}
         lspconfig.ruff_lsp.setup {}
       end,
-      event = "VeryLazy",
+      event = { "BufReadPost", "BufNewFile", "BufWritePre", "VeryLazy" },
     },
 
     {
