@@ -57,169 +57,179 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   desc = "Briefly highlight yanked text",
 })
 
--- [[ Install 'mini.deps' plugin manager ]]
--- I prefer 'mini.deps' over 'lazy.nvim'. I find the simpler and more explicit plugin management
--- provided by 'mini.deps' to be more enjoyable to work with. Manually managing the complexity of
--- loading modules in the correct order and at the right time is certainly not for everyone, but I
--- find it much easier to reason about and build upon.
--- Clone 'mini.nvim' manually in a way that it gets managed by 'mini.deps'
-local path_package = vim.fn.stdpath "data" .. "/site/"
-local mini_path = path_package .. "pack/deps/start/mini.nvim"
-if not vim.uv.fs_stat(mini_path) then
-  vim.cmd 'echo "Installing `mini.nvim`" | redraw'
-  local clone_cmd = {
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://github.com/echasnovski/mini.nvim",
-    mini_path,
-  }
-  vim.fn.system(clone_cmd)
-  vim.cmd "packadd mini.nvim | helptags ALL"
-  vim.cmd 'echo "Installed `mini.nvim`" | redraw'
-end
-
--- Set up 'mini.deps' (customize to your liking)
-require("mini.deps").setup { path = { package = path_package } }
-
-local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
-
-now(function()
-  for _, disable in ipairs { "gzip", "netrwPlugin", "tarPlugin", "tohtml", "tutor", "zipPlugin" } do
-    vim.g["loaded_" .. disable] = 0
+-- [[ Install lazy.nvim plugin manager ]]
+-- mini.deps plugin manager provides simpler and more explicit plugin management. Manually managing the complexity of
+-- loading modules in the correct order and at the right time is certainly not for everyone, but it may be easier to
+-- reason about and build upon.
+--
+-- mini.deps benefits - full control over the load order, help is always loaded, managing mini.nvim specifically is
+-- easier with `now()` and `later()` to load different modules independently.
+--
+-- mini.deps drawbacks - sequential install, minimalistic UI and UX, `later()` unintuitive interaction with
+-- autocommands.
+--
+-- I want to try and reproduce mini.deps benefits with more focused lazy.nvim configuration.
+--
+-- Bootstrap lazy.nvim
+local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+  local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+  local out = vim.fn.system { "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath }
+  if vim.v.shell_error ~= 0 then
+    vim.api.nvim_echo({
+      { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
+      { out, "WarningMsg" },
+      { "\nPress any key to exit..." },
+    }, true, {})
+    vim.fn.getchar()
+    os.exit(1)
   end
-end)
+end
+vim.opt.rtp:prepend(lazypath)
 
--- [[ Step one - load plugins with UI necessary to make initial screen draw ]]
-now(function()
-  add "shaunsingh/nord.nvim"
-  vim.cmd "colorscheme nord"
-  vim.cmd "highlight! link Whitespace DiagnosticError" -- Highlight nonprinting characters
-end)
+-- Make sure to setup `mapleader` and `maplocalleader` before
+-- loading lazy.nvim so that mappings are correct.
+-- This is also a good place to setup other settings (vim.opt)
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
 
--- [[ Step two - load other plugins ]]
--- `MiniDeps.later()` schedules code to be safely executed later.
--- `later(function() require(...).setup() end)` correctly postpones module loading.
--- `later(require(...).setup)` does not postpone module loading, but only postpones `setup()`.
-later(function() require("mini.diff").setup() end)
-later(function() require("mini.git").setup() end)
+-- Setup lazy.nvim
+require("lazy").setup {
+  spec = {
+    -- add your plugins here
+    -- [[ Step one - load plugins with UI necessary to make initial screen draw ]]
+    {
+      "shaunsingh/nord.nvim",
+      lazy = false, -- make sure we load this during startup if it is your main colorscheme
+      priority = 1000, -- make sure to load this before all the other start plugins
+      config = function()
+        -- load the colorscheme here
+        vim.cmd [[colorscheme nord]]
+        vim.cmd [[highlight! link Whitespace DiagnosticError]] -- Highlight nonprinting characters
+      end,
+    },
+    -- [[ Step two - load other plugins ]]
+    {
+      "echasnovski/mini.nvim",
+      config = function()
+        require("mini.diff").setup()
+        require("mini.git").setup()
+      end,
+      event = "VeryLazy",
+    },
 
-later(function()
-  add {
-    source = "nvim-treesitter/nvim-treesitter",
-    hooks = {
-      post_checkout = function()
+    { "nvim-treesitter/nvim-treesitter-textobjects", lazy = true },
+    { "nvim-treesitter/playground", lazy = true },
+    {
+      "nvim-treesitter/nvim-treesitter",
+      config = function()
+        require("nvim-treesitter.install").prefer_git = false
+        require("nvim-treesitter.configs").setup { ---@diagnostic disable-line:missing-fields
+          textobjects = {
+            select = {
+              enable = true,
+              keymaps = {
+                ["af"] = "@function.outer",
+                ["if"] = "@function.inner",
+              },
+            },
+          },
+        }
+      end,
+      build = function()
         local install = require "nvim-treesitter.install"
         local shell = require "nvim-treesitter.shell_command_selectors"
         local cc = shell.select_executable(install.compilers)
-        if cc then vim.cmd "TSUpdate" end
+        if not cc then
+          vim.api.nvim_err_writeln "No C compiler found!"
+          return
+        end
+        vim.cmd [[TSUpdate]]
       end,
+      event = "VeryLazy",
     },
-  }
-  add "nvim-treesitter/nvim-treesitter-textobjects"
-  add "nvim-treesitter/playground"
-  require("nvim-treesitter.install").prefer_git = false
-  require("nvim-treesitter.configs").setup { ---@diagnostic disable-line:missing-fields
-    textobjects = {
-      select = {
-        enable = true,
-        keymaps = {
-          ["af"] = "@function.outer",
-          ["if"] = "@function.inner",
-        },
-      },
+
+    { "j-hui/fidget.nvim", opts = {}, event = "VeryLazy" },
+    { "williamboman/mason-lspconfig.nvim", lazy = true },
+    { "williamboman/mason.nvim", lazy = true },
+    {
+      "neovim/nvim-lspconfig",
+      config = function()
+        local path = require "mason-core.path"
+        require("mason").setup {
+          install_root_dir = path.concat { vim.env.USERPROFILE or vim.env.HOME, "Tools", "mason" },
+        }
+        require("mason-lspconfig").setup()
+
+        local lspconfig = require "lspconfig"
+        lspconfig.lua_ls.setup {
+          -- The default `root_dir` checks for Lua configuration files, the presence of the `lua/`
+          -- directory, and only then for the `.git` directory. It finds my `Projects` directory
+          -- before locating the actual project root, as I have a `lua/` directory for all my
+          -- Lua projects. I find that only looking for the `.git` directory is more consistent.
+          root_dir = lspconfig.util.find_git_ancestor,
+          settings = {
+            Lua = {
+              runtime = {
+                version = "LuaJIT",
+                path = vim.split(package.path, ";"),
+              },
+              workspace = {
+                checkThirdParty = false,
+                library = { vim.env.VIMRUNTIME },
+              },
+              telemetry = {
+                enable = false,
+              },
+            },
+          },
+        }
+        lspconfig.basedpyright.setup {}
+        lspconfig.ruff_lsp.setup {}
+      end,
+      event = "VeryLazy",
     },
-  }
-end)
 
-later(function()
-  add {
-    source = "neovim/nvim-lspconfig",
-    depends = {
-      "j-hui/fidget.nvim",
-      "williamboman/mason-lspconfig.nvim",
-      "williamboman/mason.nvim",
-    },
-  }
-  require("fidget").setup {}
-
-  local path = require "mason-core.path"
-  require("mason").setup { install_root_dir = path.concat { vim.env.USERPROFILE or vim.env.HOME, "Tools", "mason" } }
-  require("mason-lspconfig").setup()
-
-  local lspconfig = require "lspconfig"
-  lspconfig.lua_ls.setup {
-    -- The default `root_dir` checks for Lua configuration files, the presence of the `lua/`
-    -- directory, and only then for the `.git` directory. It finds my `Projects` directory
-    -- before locating the actual project root, as I have a `lua/` directory for all my
-    -- Lua projects. I find that only looking for the `.git` directory is more consistent.
-    root_dir = lspconfig.util.find_git_ancestor,
-    settings = {
-      Lua = {
-        runtime = {
-          version = "LuaJIT",
-          path = vim.split(package.path, ";"),
-        },
-        workspace = {
-          checkThirdParty = false,
-          library = { vim.env.VIMRUNTIME },
-        },
-        telemetry = {
-          enable = false,
-        },
-      },
-    },
-  }
-  lspconfig.basedpyright.setup {}
-  lspconfig.ruff_lsp.setup {}
-end)
-
-later(function()
-  add {
-    source = "folke/lazydev.nvim",
-    depends = { "Bilal2453/luvit-meta" },
-  }
-  vim.api.nvim_create_autocmd("FileType", {
-    group = augroup,
-    pattern = "lua",
-    callback = function()
-      require("lazydev").setup {
+    {
+      "folke/lazydev.nvim",
+      ft = "lua", -- only load on lua files
+      opts = {
         library = {
+          -- See the configuration section for more details
+          -- Load luvit types when the `vim.uv` word is found
           { path = "luvit-meta/library", words = { "vim%.uv" } },
         },
-      }
-    end,
-    desc = "Setup lazydev",
-  })
-end)
-
-later(function()
-  add "stevearc/conform.nvim"
-  require("conform").setup {
-    formatters_by_ft = {
-      lua = { "stylua" },
-      python = { "black" },
+      },
     },
-    format_on_save = {},
-  }
-end)
+    { "Bilal2453/luvit-meta", lazy = true }, -- optional `vim.uv` typings
 
-later(function()
-  add "stevearc/oil.nvim"
-  require("oil").setup {
-    view_options = {
-      show_hidden = true,
+    {
+      "stevearc/conform.nvim",
+      opts = {
+        formatters_by_ft = {
+          lua = { "stylua" },
+          python = { "black" },
+        },
+        format_on_save = {},
+      },
+      event = "VeryLazy",
     },
-  }
-  vim.keymap.set("n", "-", "<Cmd>Oil<CR>", { desc = "Open parent directory" })
-end)
 
-later(function()
-  -- Manually trigger `lspconfig` autocommands, as `later()` defers `lspconfig.server.setup()`.
-  -- If not triggered, an LSP client will not automatically attach to a buffer.
-  -- Treesitter also does not start properly.
-  -- https://github.com/echasnovski/mini.nvim/issues/689#issuecomment-1939509494
-  vim.cmd "doautocmd FileType"
-end)
+    {
+      "stevearc/oil.nvim",
+      opts = {
+        view_options = {
+          show_hidden = true,
+        },
+      },
+      event = "VeryLazy",
+      keys = {
+        { "-", "<Cmd>Oil<CR>", desc = "Open parent directory" },
+      },
+    },
+  },
+  -- colorscheme that will be used when installing plugins.
+  install = { colorscheme = { "habamax" } },
+}
 
 -- vim: ts=2 sts=2 sw=2 et
