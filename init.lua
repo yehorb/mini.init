@@ -31,7 +31,7 @@ if vim.uv.os_uname().version:match "Windows" then
   ]]
 end
 
--- Switch to ukrainian using *i_CTRL-^*
+-- Switch to Ukrainian using *i_CTRL-^*
 vim.o.keymap = "ukrainian-jcuken"
 vim.o.iminsert = 0
 vim.o.imsearch = 0
