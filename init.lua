@@ -122,6 +122,8 @@ require("lazy").setup {
       config = function()
         require("mini.diff").setup()
         require("mini.git").setup()
+        require("mini.ai").setup { n_lines = 500 }
+        require("mini.statusline").setup { use_icons = false }
       end,
       event = "VeryLazy",
     },
