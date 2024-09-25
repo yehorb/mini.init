@@ -76,6 +76,17 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   desc = "Briefly highlight yanked text",
 })
 
+vim.api.nvim_create_autocmd("Filetype", {
+  group = augroup,
+  callback = function(ev)
+    -- Defer the execution to allow *lsp-defaults* to set omnifunc, if available
+    vim.schedule(function()
+      if vim.bo[ev.buf].omnifunc == nil then vim.bo[ev.buf].omnifunc = "syntaxcomplete#Complete" end
+    end)
+  end,
+  desc = "Set *ft-syntax-omni* omnifunc",
+})
+
 -- [[ Install lazy.nvim plugin manager ]]
 -- mini.deps plugin manager provides simpler and more explicit plugin management. Manually managing the complexity of
 -- loading modules in the correct order and at the right time is certainly not for everyone, but it may be easier to
