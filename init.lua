@@ -271,6 +271,13 @@ require("lazy").setup {
       },
     },
     { "folke/twilight.nvim", lazy = true },
+
+    {
+      "m4xshen/hardtime.nvim",
+      opts = {},
+    },
+    { "MunifTanjim/nui.nvim", lazy = true },
+    { "nvim-lua/plenary.nvim", lazy = true },
   },
   -- colorscheme that will be used when installing plugins.
   install = { colorscheme = { "habamax" } },
