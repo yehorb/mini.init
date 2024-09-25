@@ -54,6 +54,12 @@ vim.opt.path:append "**"
 vim.keymap.set("n", "<C-b>", ":buffer ", { desc = "Invoke the buffer search" })
 vim.keymap.set("n", "<C-p>", ":find ", { desc = "Invoke the file search" })
 
+-- Make * and # stay on the current word.
+vim.cmd [[
+nmap <silent> * <Cmd>let @/='\<'.expand('<cword>').'\>' <Bar> set hlsearch<CR>
+nmap <silent> # <Cmd>let @/='\<'.expand('<cword>').'\>' <Bar> set hlsearch<CR>
+]]
+
 -- [[ Basic Autocommands ]]
 -- Nvim will always call a Lua function with a single table containing information
 -- about the triggered autocommand. This means that if your callback itself takes
