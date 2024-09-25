@@ -39,6 +39,9 @@ vim.o.imsearch = 0
 vim.o.scrolloff = 8
 vim.o.sidescrolloff = 8
 
+-- Move the cursor to the first non-blank of the line to avoid erratic cursor movement
+vim.o.startofline = true
+
 -- [[ Basic Keymaps ]]
 -- Keybinds to make split navigation easier.
 vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
