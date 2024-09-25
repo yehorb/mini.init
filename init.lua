@@ -34,6 +34,9 @@ vim.o.keymap = "ukrainian-jcuken"
 vim.o.iminsert = 0
 vim.o.imsearch = 0
 
+vim.o.scrolloff = 8
+vim.o.sidescrolloff = 8
+
 -- [[ Basic Keymaps ]]
 -- Keybinds to make split navigation easier.
 vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
