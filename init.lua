@@ -15,6 +15,8 @@ vim.opt.listchars = { eol = "␤", tab = "→ ", trail = "␠", nbsp = "␣" }
 -- typing, fewer options become available, allowing me to either select a completion
 -- item or continue typing if I don't see the desired option.
 vim.o.completeopt = "menuone,preview,noselect"
+-- Limit the height of the popup menu.
+vim.o.pumheight = 15
 
 -- The default value `auto` causes signcolumn to flicker during analysis.
 vim.o.signcolumn = "yes"
