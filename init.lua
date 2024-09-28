@@ -263,7 +263,14 @@ require("lazy").setup {
 
     {
       "folke/zen-mode.nvim",
-      opts = {},
+      opts = {
+        plugins = {
+          options = {
+            ruler = true,
+          },
+          twilight = { enabled = false },
+        },
+      },
       event = "VeryLazy",
       keys = {
         { "<C-w>z", function() require("zen-mode").toggle() end, desc = "Toggle *Zen Mode*" },
