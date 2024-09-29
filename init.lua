@@ -267,6 +267,7 @@ require("lazy").setup {
         plugins = {
           options = {
             ruler = true,
+            laststatus = 3,
           },
           twilight = { enabled = false },
         },
