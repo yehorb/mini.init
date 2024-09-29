@@ -223,7 +223,6 @@ require("lazy").setup {
       end,
       event = { "BufReadPost", "BufNewFile", "BufWritePre", "VeryLazy" },
     },
-
     {
       "folke/lazydev.nvim",
       ft = "lua", -- only load on lua files
