@@ -81,6 +81,7 @@ vim.api.nvim_create_autocmd("Filetype", {
   callback = function(ev)
     -- Defer the execution to allow *lsp-defaults* to set omnifunc, if available
     vim.defer_fn(function()
+      if vim.fn.bufexists(ev.buf) ~= 1 then return end
       if vim.bo[ev.buf].omnifunc == "" then vim.bo[ev.buf].omnifunc = "syntaxcomplete#Complete" end
     end, 1000)
   end,
