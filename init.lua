@@ -164,6 +164,7 @@ require("lazy").setup {
       config = function()
         require("nvim-treesitter.install").prefer_git = false
         require("nvim-treesitter.configs").setup { ---@diagnostic disable-line:missing-fields
+          ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "markdown", "markdown_inline" },
           textobjects = {
             select = {
               enable = true,
