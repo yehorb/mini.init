@@ -158,6 +158,8 @@ require("lazy").setup {
       end,
     },
     -- [[ Step two - load other plugins ]]
+    { "tpope/vim-unimpaired", event = "VeryLazy" },
+
     {
       "echasnovski/mini.nvim",
       config = function()
