@@ -263,6 +263,7 @@ require("lazy").setup {
         formatters_by_ft = {
           lua = { "stylua" },
           python = { "black" },
+          hcl = { "terragrunt_hclfmt" },
         },
         format_on_save = {},
       },
