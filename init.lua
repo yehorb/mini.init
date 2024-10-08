@@ -35,6 +35,19 @@ end
 vim.o.keymap = "ukrainian-jcuken"
 vim.o.iminsert = 0
 vim.o.imsearch = 0
+vim.keymap.set(
+  "n",
+  "<F6>",
+  "<Cmd>set iminsert=1 imsearch=1 <Bar> startinsert<CR>",
+  { desc = "Turn on :lmap and IM and enter Insert mode" }
+)
+vim.keymap.set({ "i", "c" }, "<F6>", "<C-^>", { desc = "Toggle the use of typing language characters" })
+vim.keymap.set(
+  { "i", "c" },
+  "<Esc>",
+  "<Esc><Cmd>set iminsert=0 imsearch=0<CR>",
+  { desc = "Turn off :lmap and IM when leaving Insert mode" }
+)
 
 vim.o.scrolloff = 8
 vim.o.sidescrolloff = 8
