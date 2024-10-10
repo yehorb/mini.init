@@ -98,7 +98,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   desc = "Briefly highlight yanked text",
 })
 
-vim.api.nvim_create_autocmd("Filetype", {
+vim.api.nvim_create_autocmd("FileType", {
   group = augroup,
   callback = function(ev)
     -- Defer the execution to allow *lsp-defaults* to set omnifunc, if available
