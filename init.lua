@@ -320,6 +320,8 @@ require("lazy").setup {
     },
     { "folke/twilight.nvim", lazy = true },
 
+    { "preservim/vim-pencil", ft = "prose" },
+
     {
       "m4xshen/hardtime.nvim",
       enabled = false,
