@@ -235,7 +235,7 @@ require("lazy").setup {
               },
               workspace = {
                 checkThirdParty = false,
-                library = { vim.env.VIMRUNTIME },
+                library = { vim.env.VIMRUNTIME, vim.fn.stdpath "data" .. "/lazy" },
               },
               telemetry = {
                 enable = false,
