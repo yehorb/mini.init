@@ -83,6 +83,10 @@ nmap <silent> * <Cmd>let @/='\<'.expand('<cword>').'\>' <Bar> set hlsearch<CR>
 nmap <silent> # <Cmd>let @/='\<'.expand('<cword>').'\>' <Bar> set hlsearch<CR>
 ]]
 
+-- Keybinds to make navigation easier when lines wrap
+vim.keymap.set({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { expr = true })
+vim.keymap.set({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { expr = true })
+
 -- [[ Basic Autocommands ]]
 -- Nvim will always call a Lua function with a single table containing information
 -- about the triggered autocommand. This means that if your callback itself takes
@@ -241,6 +245,7 @@ require("lazy").setup {
         }
         lspconfig.basedpyright.setup {}
         lspconfig.ruff_lsp.setup {}
+        lspconfig.marksman.setup {}
       end,
       event = { "BufReadPost", "BufNewFile", "BufWritePre", "VeryLazy" },
     },
