@@ -38,7 +38,7 @@ vim.o.imsearch = 0
 vim.keymap.set(
   "n",
   "<F6>",
-  "<Cmd>set iminsert=1 imsearch=1 <Bar> startinsert<CR>",
+  "<Cmd>set iminsert=1 imsearch=1<CR>a",
   { desc = "Turn on :lmap and IM and enter Insert mode" }
 )
 vim.keymap.set({ "i", "c" }, "<F6>", "<C-^>", { desc = "Toggle the use of typing language characters" })
