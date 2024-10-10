@@ -120,7 +120,10 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 vim.api.nvim_create_autocmd("FileType", {
   group = augroup,
   pattern = { "markdown" },
-  callback = function() vim.opt.filetype:append ".prose" end,
+  callback = function()
+    vim.opt.filetype:append ".prose"
+    vim.api.nvim_exec_autocmds("User", { pattern = "prose" })
+  end,
 })
 
 -- [[ Install lazy.nvim plugin manager ]]
@@ -320,7 +323,8 @@ require("lazy").setup {
     },
     { "folke/twilight.nvim", lazy = true },
 
-    { "preservim/vim-pencil", ft = "prose" },
+    { "preservim/vim-pencil", event = "User prose" },
+
 
     {
       "m4xshen/hardtime.nvim",
