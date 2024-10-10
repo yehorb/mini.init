@@ -121,8 +121,8 @@ vim.api.nvim_create_autocmd("FileType", {
   group = augroup,
   pattern = { "markdown" },
   callback = function()
-    vim.opt.filetype:append ".prose"
     vim.api.nvim_exec_autocmds("User", { pattern = "prose" })
+    vim.opt.filetype:append ".prose"
   end,
 })
 
