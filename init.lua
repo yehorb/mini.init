@@ -110,6 +110,12 @@ vim.api.nvim_create_autocmd("Filetype", {
   desc = "Set *ft-syntax-omni* omnifunc",
 })
 
+vim.api.nvim_create_autocmd("BufReadPost", {
+  group = augroup,
+  pattern = "quickfix",
+  callback = function() vim.opt_local.wrap = false end,
+})
+
 -- [[ Install lazy.nvim plugin manager ]]
 -- mini.deps plugin manager provides simpler and more explicit plugin management. Manually managing the complexity of
 -- loading modules in the correct order and at the right time is certainly not for everyone, but it may be easier to
