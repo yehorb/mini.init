@@ -116,6 +116,13 @@ vim.api.nvim_create_autocmd("BufReadPost", {
   callback = function() vim.opt_local.wrap = false end,
 })
 
+-- Custom filetype prose-oriented file types
+vim.api.nvim_create_autocmd("FileType", {
+  group = augroup,
+  pattern = { "markdown" },
+  callback = function() vim.opt.filetype:append ".prose" end,
+})
+
 -- [[ Install lazy.nvim plugin manager ]]
 -- mini.deps plugin manager provides simpler and more explicit plugin management. Manually managing the complexity of
 -- loading modules in the correct order and at the right time is certainly not for everyone, but it may be easier to
