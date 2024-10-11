@@ -293,9 +293,19 @@ require("lazy").setup {
 
     {
       "stevearc/oil.nvim",
+      init = function()
+        vim.g.loaded_netrw = 1
+        vim.g.loaded_netrwPlugin = 1
+      end,
       opts = {
+        default_file_explorer = true,
         view_options = {
           show_hidden = true,
+        },
+        keymaps = {
+          ["<C-h>"] = false,
+          ["<C-l>"] = false,
+          ["<C-p>"] = false,
         },
       },
       event = "VeryLazy",
