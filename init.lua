@@ -316,25 +316,6 @@ require("lazy").setup {
       },
     },
 
-    {
-      "folke/zen-mode.nvim",
-      opts = {
-        plugins = {
-          options = {
-            ruler = true,
-            laststatus = 3,
-          },
-          twilight = { enabled = false },
-        },
-      },
-      event = "VeryLazy",
-      keys = {
-        { "<C-w>z", function() require("zen-mode").toggle() end, desc = "Toggle *Zen Mode*" },
-        { "<C-z>", function() require("zen-mode").toggle() end, desc = "Toggle *Zen Mode*" },
-      },
-    },
-    { "folke/twilight.nvim", lazy = true },
-
     { "preservim/vim-pencil", event = "User prose" },
 
     {
