@@ -316,6 +316,7 @@ require("lazy").setup {
       },
     },
 
+    { "shortcuts/no-neck-pain.nvim", version = "*", event = "VeryLazy" },
     { "preservim/vim-pencil", event = "User prose" },
 
     {
