@@ -122,10 +122,7 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 vim.api.nvim_create_autocmd("FileType", {
   group = augroup,
   pattern = { "markdown" },
-  callback = function()
-    vim.api.nvim_exec_autocmds("User", { pattern = "prose" })
-    vim.opt.filetype:append ".prose"
-  end,
+  callback = function() vim.api.nvim_exec_autocmds("FileType", { pattern = "prose" }) end,
 })
 
 -- [[ Install lazy.nvim plugin manager ]]
@@ -264,6 +261,7 @@ require("lazy").setup {
         lspconfig.basedpyright.setup {}
         lspconfig.ruff_lsp.setup {}
         lspconfig.marksman.setup {}
+        lspconfig.ltex.setup {}
       end,
       event = { "BufReadPost", "BufNewFile", "BufWritePre", "VeryLazy" },
     },
@@ -317,7 +315,7 @@ require("lazy").setup {
     },
 
     { "shortcuts/no-neck-pain.nvim", version = "*", event = "VeryLazy" },
-    { "preservim/vim-pencil", event = "User prose" },
+    { "preservim/vim-pencil", ft = "prose" },
 
     {
       "epwalsh/obsidian.nvim",

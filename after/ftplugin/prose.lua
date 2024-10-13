@@ -1,11 +1,32 @@
-vim.opt_local.spell = true
-vim.opt_local.spelllang = { "en", "uk" }
+vim.wo.spell = true
+-- Using en spelllang slows downg suggestions immensly
+vim.bo.spelllang = "uk,en_gb,en_us"
 
--- pencil#init will set conceallevel and textwidth options
-vim.opt_local.colorcolumn = "+1"
+vim.bo.textwidth = 79
+vim.wo.colorcolumn = "+1"
+vim.wo.conceallevel = 1
 
-vim.fn["pencil#init"] {
-  conceallevel = 1,
-  textwidth = 80,
-  wrap = "hard",
-}
+vim.api.nvim_create_user_command("ProseMode", function()
+  -- Open the current buffer in the new tab
+  vim.cmd.split { mods = { tab = 1 } }
+
+  vim.wo.fillchars = "vert: ,eob: "
+  vim.o.laststatus = 3
+
+  local pain = require "no-neck-pain"
+  pain.setup {
+    width = 88,
+    buffers = {
+      wo = {
+        fillchars = vim.wo.fillchars,
+      },
+    },
+  }
+  pain.enable()
+
+  vim.fn["pencil#init"] {
+    conceallevel = vim.wo.conceallevel,
+    textwidth = vim.bo.textwidth,
+    wrap = "soft",
+  }
+end, {})
