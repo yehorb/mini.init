@@ -345,6 +345,8 @@ require("lazy").setup {
             path = vim.fs.normalize "~/Documents/Obsidian Vault",
           },
         },
+        notes_subdir = "00 - Inbox",
+        new_notes_location = "notes_subdir",
         ---@param title string|?
         ---@return string
         note_id_func = function(title)
@@ -363,7 +365,7 @@ require("lazy").setup {
           -- Add the title of the note as an alias.
           if note.title then note:add_alias(note.title) end
           -- Add the date of the note as an alias.
-          note:add_alias(string.gsub(note.id, "[^0-9]*$", ""))
+          note:add_alias(string.match(note.id, "^[0-9]*"))
 
           local out = { id = note.id, aliases = note.aliases, tags = note.tags }
 
@@ -377,6 +379,8 @@ require("lazy").setup {
 
           return out
         end,
+        wiki_link_func = "use_alias_only",
+        picker = false,
       },
       event = {
         "BufReadPre " .. vim.fs.normalize "~/Documents/Obsidian Vault" .. "/*.md",
