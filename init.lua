@@ -278,6 +278,9 @@ require("lazy").setup {
         lspconfig.ruff_lsp.setup {}
         lspconfig.marksman.setup {}
         lspconfig.ltex.setup {}
+        lspconfig.verible.setup {
+          root_dir = lspconfig.util.root_pattern { "verible.filelist", ".git" },
+        }
       end,
       event = { "BufReadPost", "BufNewFile", "BufWritePre", "VeryLazy" },
     },
