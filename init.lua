@@ -296,6 +296,10 @@ require("lazy").setup {
               end,
             })
           end
+
+          -- Disable duplicate diagnostics from verible
+          -- https://github.com/neovim/neovim/issues/29927
+          if client.name == "verible" then client.server_capabilities.diagnosticProvider = nil end
         end
 
         vim.api.nvim_create_autocmd("LspAttach", {
@@ -331,6 +335,7 @@ require("lazy").setup {
         lspconfig.marksman.setup {}
         lspconfig.ltex.setup {}
         lspconfig.verible.setup {
+          cmd = { "verible-verilog-ls", "--rules_config_search" },
           root_dir = lspconfig.util.root_pattern { "verible.filelist", ".git" },
         }
       end,
