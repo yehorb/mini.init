@@ -251,6 +251,12 @@ require("lazy").setup {
         }
         require("mason-lspconfig").setup()
 
+        vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+          border = "rounded",
+          title = "LSP: Hover",
+          silent = true,
+        })
+
         local lspconfig = require "lspconfig"
         lspconfig.lua_ls.setup {
           -- The default `root_dir` checks for Lua configuration files, the presence of the `lua/`
