@@ -257,6 +257,52 @@ require("lazy").setup {
           silent = true,
         })
 
+        local on_attach = function(ev)
+          local client = vim.lsp.get_client_by_id(ev.data.client_id)
+          if client == nil then return end
+
+          client.flags.debounce_text_changes = 500
+
+          -- Set the default omnifunc, just in case it was set to syntaxcomplete#Complete
+          -- before LspAttach
+          vim.bo[ev.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
+
+          vim.keymap.set(
+            "n",
+            "<Leader>la",
+            function() vim.lsp.buf.code_action() end,
+            { buffer = ev.buf, desc = "[L]SP: Code [A]ction" }
+          )
+
+          if client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
+            local hl_group = vim.api.nvim_create_augroup("vimrc-lsp-hl", { clear = true })
+            vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+              buffer = ev.buf,
+              group = hl_group,
+              callback = vim.lsp.buf.document_highlight,
+            })
+
+            vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+              buffer = ev.buf,
+              group = hl_group,
+              callback = vim.lsp.buf.clear_references,
+            })
+
+            vim.api.nvim_create_autocmd("LspDetach", {
+              group = hl_group,
+              callback = function(event2)
+                vim.lsp.buf.clear_references()
+                vim.api.nvim_clear_autocmds { group = "vimrc-lsp-hl", buffer = event2.buf }
+              end,
+            })
+          end
+        end
+
+        vim.api.nvim_create_autocmd("LspAttach", {
+          group = augroup,
+          callback = on_attach,
+        })
+
         local lspconfig = require "lspconfig"
         lspconfig.lua_ls.setup {
           -- The default `root_dir` checks for Lua configuration files, the presence of the `lua/`
