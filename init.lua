@@ -422,7 +422,8 @@ require("lazy").setup {
           -- Add the title of the note as an alias.
           if note.title then note:add_alias(note.title) end
           -- Add the date of the note as an alias.
-          note:add_alias(string.match(note.id, "^[0-9]*"))
+          local id_date = string.match(note.id, "^[0-9]*")
+          if #id_date > 0 then note:add_alias(id_date) end
 
           local out = { id = note.id, aliases = note.aliases, tags = note.tags }
 
