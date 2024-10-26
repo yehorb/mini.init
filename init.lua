@@ -120,7 +120,7 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.api.nvim_create_autocmd("BufReadPost", {
   group = augroup,
   pattern = "quickfix",
-  callback = function() vim.opt_local.wrap = false end,
+  callback = function() vim.wo.wrap = false end,
 })
 
 -- Custom filetype prose-oriented file types
