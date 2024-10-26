@@ -127,7 +127,10 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 vim.api.nvim_create_autocmd("FileType", {
   group = augroup,
   pattern = { "markdown" },
-  callback = function() vim.api.nvim_exec_autocmds("FileType", { pattern = "prose" }) end,
+  callback = function()
+    vim.api.nvim_exec_autocmds("User", { pattern = "prose" })
+    vim.api.nvim_exec_autocmds("FileType", { pattern = "prose" })
+  end,
 })
 
 -- Make the lowest line stay at least g:scrolloff lines from the bottom of the screen
@@ -395,7 +398,7 @@ require("lazy").setup {
     },
 
     { "shortcuts/no-neck-pain.nvim", version = "*", event = "VeryLazy" },
-    { "preservim/vim-pencil", ft = "prose" },
+    { "preservim/vim-pencil", event = "User prose" },
 
     {
       "epwalsh/obsidian.nvim",
