@@ -8,6 +8,10 @@ vim.o.undofile = true
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
+vim.o.expandtab = true
+vim.o.tabstop = 4
+vim.o.shiftwidth = 4
+
 vim.o.list = true
 vim.opt.listchars = { eol = "␤", tab = "→ ", trail = "␠", nbsp = "␣" }
 
