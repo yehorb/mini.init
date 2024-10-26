@@ -1,32 +1,43 @@
-vim.wo.spell = true
--- Using en spelllang slows downg suggestions immensly
-vim.bo.spelllang = "uk,en_gb,en_us"
+local M = {}
 
-vim.bo.textwidth = 79
-vim.wo.colorcolumn = "+1"
-vim.wo.conceallevel = 1
+function M.init()
+  vim.wo.spell = true
+  vim.bo.spelllang = "uk,en_gb" -- Using en spelllang slows downg suggestions immensly
 
-vim.api.nvim_create_user_command("ProseMode", function()
+  -- Init pencil first, as it sets some options I want to override
+  vim.fn["pencil#init"] { wrap = "soft" }
+
+  vim.wo.conceallevel = 1
+  vim.wo.list = true
+
+  vim.o.laststatus = 3 -- Show single statusline for all windows. Makes focused pane look better
+end
+
+function M.focus_current_pane()
   -- Open the current buffer in the new tab
   vim.cmd.split { mods = { tab = 1 } }
 
-  vim.wo.fillchars = "vert: ,eob: "
-  vim.o.laststatus = 3
+  local fillchars = "vert: ,eob: "
 
-  local pain = require "no-neck-pain"
-  pain.setup {
+  local focus_pane = require "no-neck-pain"
+  focus_pane.setup {
     width = 88,
     buffers = {
+      colors = {
+        background = require("nord.named_colors").black,
+        blend = -0.1,
+      },
       wo = {
-        fillchars = vim.wo.fillchars,
+        fillchars = fillchars,
       },
     },
   }
-  pain.enable()
+  focus_pane.enable()
 
-  vim.fn["pencil#init"] {
-    conceallevel = vim.wo.conceallevel,
-    textwidth = vim.bo.textwidth,
-    wrap = "soft",
-  }
-end, {})
+  vim.wo.fillchars = fillchars
+end
+
+M.init()
+_G["ProseMode"] = M
+
+return M
