@@ -335,7 +335,7 @@ require("lazy").setup {
         lspconfig.marksman.setup {}
         lspconfig.ltex.setup {}
         lspconfig.verible.setup {
-          cmd = { "verible-verilog-ls", "--rules_config_search" },
+          cmd = { "verible-verilog-ls", "--rules_config_search", "--indentation_spaces=4" },
           root_dir = lspconfig.util.root_pattern { "verible.filelist", ".git" },
         }
       end,
