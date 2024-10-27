@@ -2,7 +2,7 @@ local M = {}
 
 function M.init()
   vim.wo.spell = true
-  vim.bo.spelllang = "uk,en_gb" -- Using en spelllang slows downg suggestions immensly
+  vim.bo.spelllang = "uk,en_us,en_gb" -- Using en spelllang slows downg suggestions immensly
 
   -- Init pencil first, as it sets some options I want to override
   vim.fn["pencil#init"] { wrap = "soft" }
