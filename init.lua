@@ -139,21 +139,6 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
--- Make the lowest line stay at least g:scrolloff lines from the bottom of the screen
--- inspired by https://github.com/Aasim-A/scrollEOF.nvim
-vim.g.scrolloff = 8
-vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI", "WinScrolled" }, {
-  group = augroup,
-  callback = function()
-    local win_height = vim.fn.winheight(0)
-    local win_view = vim.fn.winsaveview()
-    local actual_scrolloff = win_view.topline + win_height - win_view.lnum - 1
-    if actual_scrolloff > vim.g.scrolloff then return end
-    -- solve for win_view.topline from equation above
-    vim.fn.winrestview { topline = vim.g.scrolloff - win_height + win_view.lnum + 1 }
-  end,
-})
-
 -- [[ Install lazy.nvim plugin manager ]]
 -- mini.deps plugin manager provides simpler and more explicit plugin management. Manually managing the complexity of
 -- loading modules in the correct order and at the right time is certainly not for everyone, but it may be easier to
