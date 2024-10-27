@@ -217,6 +217,8 @@ require("lazy").setup {
             select = {
               enable = true,
               keymaps = {
+                ["ab"] = "@block.outer",
+                ["ib"] = "@block.inner",
                 ["af"] = "@function.outer",
                 ["if"] = "@function.inner",
               },
