@@ -39,15 +39,20 @@ end
 vim.o.keymap = "ukrainian-jcuken"
 vim.o.iminsert = 0
 vim.o.imsearch = 0
-for _, key in ipairs { "O", "a", "c", "i", "o", "r" } do
-  vim.keymap.set(
-    "n",
-    "U" .. key,
-    "<Cmd>set iminsert=1 imsearch=1<CR>" .. key,
-    { desc = "Turn on :lmap and IM and enter Insert mode" }
-  )
+for _, lower in ipairs { "a", "c", "i", "o", "r" } do
+  local upper = lower:upper()
+  for _, key in ipairs { lower, upper } do
+    vim.keymap.set(
+      "n",
+      "U" .. key,
+      "<Cmd>set iminsert=1 imsearch=1<CR>" .. key,
+      { desc = "Turn on :lmap and IM and enter Insert mode" }
+    )
+  end
 end
-vim.keymap.set({ "i", "c" }, "<F6>", "<C-^>", { desc = "Toggle the use of typing language characters" })
+for _, key in ipairs { "<F4>", "<F5>", "<F6>" } do
+  vim.keymap.set({ "i", "c" }, key, "<C-^>", { desc = "Toggle the use of typing language characters" })
+end
 vim.keymap.set(
   "i",
   "<Esc>",
