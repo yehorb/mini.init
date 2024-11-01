@@ -181,295 +181,304 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 -- Setup lazy.nvim
-require("lazy").setup {
-  spec = {
-    -- add your plugins here
-    -- [[ Step one - load plugins with UI necessary to make initial screen draw ]]
-    {
-      "shaunsingh/nord.nvim",
-      lazy = false, -- make sure we load this during startup if it is your main colorscheme
-      priority = 1000, -- make sure to load this before all the other start plugins
-      config = function()
-        -- load the colorscheme here
-        vim.cmd [[colorscheme nord]]
-        vim.cmd [[highlight! link Whitespace DiagnosticError]] -- Highlight nonprinting characters
-      end,
-    },
-    -- [[ Step two - load other plugins ]]
-    { "tpope/vim-unimpaired", event = "VeryLazy" },
-
-    {
-      "echasnovski/mini.nvim",
-      config = function()
-        require("mini.diff").setup()
-        require("mini.git").setup()
-        require("mini.ai").setup { n_lines = 500 }
-        require("mini.surround").setup()
-        require("mini.statusline").setup { use_icons = false }
-      end,
-      event = "VeryLazy",
-    },
-
-    { "nvim-treesitter/nvim-treesitter-textobjects", lazy = true },
-    { "nvim-treesitter/playground", lazy = true },
-    {
-      "nvim-treesitter/nvim-treesitter",
-      opts = {
-        ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "markdown", "markdown_inline" },
-        textobjects = {
-          select = {
-            enable = true,
-            keymaps = {
-              ["ab"] = "@block.outer",
-              ["ib"] = "@block.inner",
-              ["af"] = "@function.outer",
-              ["if"] = "@function.inner",
-            },
-          },
-        },
-        highlight = {
-          enable = true,
-          additional_vim_regex_highlighting = { "markdown" },
-        },
-      },
-      config = function(_, opts)
-        require("nvim-treesitter.install").prefer_git = false
-        require("nvim-treesitter.configs").setup(opts)
-      end,
-      build = function()
-        local install = require "nvim-treesitter.install"
-        local shell = require "nvim-treesitter.shell_command_selectors"
-        local cc = shell.select_executable(install.compilers)
-        if not cc then
-          vim.api.nvim_err_writeln "No C compiler found!"
-          return
-        end
-        vim.cmd [[TSUpdate]]
-      end,
-      event = { "BufReadPost", "BufNewFile", "BufWritePre", "VeryLazy" },
-    },
-
-    { "j-hui/fidget.nvim", opts = {}, event = "VeryLazy" },
-    { "williamboman/mason-lspconfig.nvim", lazy = true },
-    { "williamboman/mason.nvim", lazy = true },
-    {
-      "neovim/nvim-lspconfig",
-      config = function()
-        local path = require "mason-core.path"
-        require("mason").setup {
-          install_root_dir = path.concat { vim.env.USERPROFILE or vim.env.HOME, "Tools", "mason" },
-        }
-        require("mason-lspconfig").setup()
-
-        vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-          border = "rounded",
-          title = "LSP: Hover",
-          silent = true,
-        })
-
-        local on_attach = function(ev)
-          local client = vim.lsp.get_client_by_id(ev.data.client_id)
-          if client == nil then return end
-
-          client.flags.debounce_text_changes = 500
-
-          -- Set the default omnifunc, just in case it was set to syntaxcomplete#Complete
-          -- before LspAttach
-          vim.bo[ev.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
-
-          vim.keymap.set(
-            "n",
-            "<Leader>la",
-            function() vim.lsp.buf.code_action() end,
-            { buffer = ev.buf, desc = "[L]SP: Code [A]ction" }
-          )
-
-          if client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
-            local hl_group = vim.api.nvim_create_augroup("vimrc-lsp-hl", { clear = true })
-            vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-              buffer = ev.buf,
-              group = hl_group,
-              callback = vim.lsp.buf.document_highlight,
-            })
-
-            vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
-              buffer = ev.buf,
-              group = hl_group,
-              callback = vim.lsp.buf.clear_references,
-            })
-
-            vim.api.nvim_create_autocmd("LspDetach", {
-              group = hl_group,
-              callback = function(event2)
-                vim.lsp.buf.clear_references()
-                vim.api.nvim_clear_autocmds { group = "vimrc-lsp-hl", buffer = event2.buf }
-              end,
-            })
-          end
-
-          -- Disable duplicate diagnostics from verible
-          -- https://github.com/neovim/neovim/issues/29927
-          if client.name == "verible" then client.server_capabilities.diagnosticProvider = nil end
-        end
-
-        vim.api.nvim_create_autocmd("LspAttach", {
-          group = augroup,
-          callback = on_attach,
-        })
-
-        local lspconfig = require "lspconfig"
-        lspconfig.lua_ls.setup {
-          -- The default `root_dir` checks for Lua configuration files, the presence of the `lua/`
-          -- directory, and only then for the `.git` directory. It finds my `Projects` directory
-          -- before locating the actual project root, as I have a `lua/` directory for all my
-          -- Lua projects. I find that only looking for the `.git` directory is more consistent.
-          root_dir = lspconfig.util.find_git_ancestor,
-          settings = {
-            Lua = {
-              runtime = {
-                version = "LuaJIT",
-                path = vim.split(package.path, ";"),
-              },
-              workspace = {
-                checkThirdParty = false,
-                library = { vim.env.VIMRUNTIME, vim.fn.stdpath "data" .. "/lazy" },
-              },
-              telemetry = {
-                enable = false,
-              },
-            },
-          },
-        }
-        lspconfig.basedpyright.setup {}
-        lspconfig.ruff_lsp.setup {}
-        lspconfig.marksman.setup {}
-        lspconfig.ltex.setup {}
-        lspconfig.verible.setup {
-          cmd = { "verible-verilog-ls", "--rules_config_search", "--indentation_spaces=4" },
-          root_dir = lspconfig.util.root_pattern { "verible.filelist", ".git" },
-        }
-      end,
-      event = { "BufReadPost", "BufNewFile", "BufWritePre", "VeryLazy" },
-    },
-    {
-      "folke/lazydev.nvim",
-      ft = "lua", -- only load on lua files
-      opts = {
-        library = {
-          -- See the configuration section for more details
-          -- Load luvit types when the `vim.uv` word is found
-          { path = "luvit-meta/library", words = { "vim%.uv" } },
-        },
-      },
-    },
-    { "Bilal2453/luvit-meta", lazy = true }, -- optional `vim.uv` typings
-
-    {
-      "stevearc/conform.nvim",
-      opts = {
-        formatters_by_ft = {
-          lua = { "stylua" },
-          python = { "black" },
-          hcl = { "terragrunt_hclfmt" },
-        },
-        format_on_save = {},
-      },
-      event = "VeryLazy",
-    },
-
-    {
-      "stevearc/oil.nvim",
-      init = function()
-        vim.g.loaded_netrw = 1
-        vim.g.loaded_netrwPlugin = 1
-      end,
-      opts = {
-        default_file_explorer = true,
-        view_options = {
-          show_hidden = true,
-        },
-        keymaps = {
-          ["<C-h>"] = false,
-          ["<C-l>"] = false,
-          ["<C-p>"] = false,
-        },
-      },
-      event = "VeryLazy",
-      keys = {
-        { "-", "<Cmd>Oil<CR>", desc = "Open parent directory" },
-      },
-    },
-
-    { "shortcuts/no-neck-pain.nvim", version = "*", event = "VeryLazy" },
-    { "preservim/vim-pencil", event = "User prose" },
-
-    {
-      "epwalsh/obsidian.nvim",
-      opts = {
-        workspaces = {
-          {
-            name = "Vault",
-            path = vim.fs.normalize "~/Documents/Obsidian Vault",
-          },
-        },
-        notes_subdir = "00 - Inbox",
-        new_notes_location = "notes_subdir",
-        ---@param title string|?
-        ---@return string
-        note_id_func = function(title)
-          local suffix = ""
-          if title ~= nil then
-            suffix = title:gsub("[^A-Za-z0-9- ]", "")
-          else
-            for _ = 1, 4 do
-              suffix = suffix .. string.char(math.random(65, 90))
-            end
-          end
-          return tostring(os.date "%Y%m%d%H%M%S") .. " " .. suffix
-        end,
-        ---@param note obsidian.Note
-        note_frontmatter_func = function(note)
-          -- Add the title of the note as an alias.
-          if note.title then note:add_alias(note.title) end
-          -- Add the date of the note as an alias.
-          local id_date = string.match(note.id, "^[0-9]*")
-          if #id_date > 0 then note:add_alias(id_date) end
-
-          local out = { id = note.id, aliases = note.aliases, tags = note.tags }
-
-          -- `note.metadata` contains any manually added fields in the frontmatter.
-          -- So here we just make sure those fields are kept in the frontmatter.
-          if note.metadata ~= nil and not vim.tbl_isempty(note.metadata) then
-            for k, v in pairs(note.metadata) do
-              out[k] = v
-            end
-          end
-
-          return out
-        end,
-        wiki_link_func = "use_alias_only",
-        picker = false,
-      },
-      event = {
-        "BufReadPre " .. vim.fs.normalize "~/Documents/Obsidian Vault" .. "/*.md",
-        "BufNewFile " .. vim.fs.normalize "~/Documents/Obsidian Vault" .. "/*.md",
-      },
-      keys = {
-        { "<Leader>on", "<Cmd>ObsidianNew<CR>" },
-      },
-      version = "*", -- recommended, use latest release instead of latest commit
-    },
-
-    {
-      "m4xshen/hardtime.nvim",
-      enabled = false,
-      opts = {},
-    },
-    { "MunifTanjim/nui.nvim", lazy = true },
-    { "nvim-lua/plenary.nvim", lazy = true },
+require("lazy").setup({
+  -- add your plugins here
+  -- [[ Step one - load plugins with UI necessary to make initial screen draw ]]
+  {
+    "shaunsingh/nord.nvim",
+    lazy = false, -- make sure we load this during startup if it is your main colorscheme
+    priority = 1000, -- make sure to load this before all the other start plugins
+    config = function()
+      -- load the colorscheme here
+      vim.cmd [[colorscheme nord]]
+      vim.cmd [[highlight! link Whitespace DiagnosticError]] -- Highlight nonprinting characters
+    end,
   },
+  -- [[ Step two - load other plugins ]]
+  { "tpope/vim-unimpaired", event = "VeryLazy" },
+
+  {
+    "echasnovski/mini.nvim",
+    config = function()
+      require("mini.diff").setup()
+      require("mini.git").setup()
+      require("mini.ai").setup { n_lines = 500 }
+      require("mini.surround").setup()
+      require("mini.statusline").setup { use_icons = false }
+    end,
+    event = "VeryLazy",
+  },
+
+  { "nvim-treesitter/nvim-treesitter-textobjects", lazy = true },
+  { "nvim-treesitter/playground", lazy = true },
+  {
+    "nvim-treesitter/nvim-treesitter",
+    opts = {
+      ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "markdown", "markdown_inline" },
+      textobjects = {
+        select = {
+          enable = true,
+          keymaps = {
+            ["ab"] = "@block.outer",
+            ["ib"] = "@block.inner",
+            ["af"] = "@function.outer",
+            ["if"] = "@function.inner",
+          },
+        },
+      },
+      highlight = {
+        enable = true,
+        additional_vim_regex_highlighting = { "markdown" },
+      },
+    },
+    config = function(_, opts)
+      require("nvim-treesitter.install").prefer_git = false
+      require("nvim-treesitter.configs").setup(opts)
+    end,
+    build = function()
+      local install = require "nvim-treesitter.install"
+      local shell = require "nvim-treesitter.shell_command_selectors"
+      local cc = shell.select_executable(install.compilers)
+      if not cc then
+        vim.api.nvim_err_writeln "No C compiler found!"
+        return
+      end
+      vim.cmd [[TSUpdate]]
+    end,
+    event = { "BufReadPost", "BufNewFile", "BufWritePre", "VeryLazy" },
+  },
+
+  { "j-hui/fidget.nvim", opts = {}, event = "VeryLazy" },
+  { "williamboman/mason-lspconfig.nvim", lazy = true },
+  { "williamboman/mason.nvim", lazy = true },
+  {
+    "neovim/nvim-lspconfig",
+    config = function()
+      local path = require "mason-core.path"
+      require("mason").setup {
+        install_root_dir = path.concat { vim.env.USERPROFILE or vim.env.HOME, "Tools", "mason" },
+      }
+      require("mason-lspconfig").setup()
+
+      vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+        border = "rounded",
+        title = "LSP: Hover",
+        silent = true,
+      })
+
+      local on_attach = function(ev)
+        local client = vim.lsp.get_client_by_id(ev.data.client_id)
+        if client == nil then return end
+
+        client.flags.debounce_text_changes = 500
+
+        -- Set the default omnifunc, just in case it was set to syntaxcomplete#Complete
+        -- before LspAttach
+        vim.bo[ev.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
+
+        vim.keymap.set(
+          "n",
+          "<Leader>la",
+          function() vim.lsp.buf.code_action() end,
+          { buffer = ev.buf, desc = "[L]SP: Code [A]ction" }
+        )
+
+        if client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
+          local hl_group = vim.api.nvim_create_augroup("vimrc-lsp-hl", { clear = true })
+          vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+            buffer = ev.buf,
+            group = hl_group,
+            callback = vim.lsp.buf.document_highlight,
+          })
+
+          vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+            buffer = ev.buf,
+            group = hl_group,
+            callback = vim.lsp.buf.clear_references,
+          })
+
+          vim.api.nvim_create_autocmd("LspDetach", {
+            group = hl_group,
+            callback = function(event2)
+              vim.lsp.buf.clear_references()
+              vim.api.nvim_clear_autocmds { group = "vimrc-lsp-hl", buffer = event2.buf }
+            end,
+          })
+        end
+
+        -- Disable duplicate diagnostics from verible
+        -- https://github.com/neovim/neovim/issues/29927
+        if client.name == "verible" then client.server_capabilities.diagnosticProvider = nil end
+      end
+
+      vim.api.nvim_create_autocmd("LspAttach", {
+        group = augroup,
+        callback = on_attach,
+      })
+
+      local lspconfig = require "lspconfig"
+      lspconfig.lua_ls.setup {
+        -- The default `root_dir` checks for Lua configuration files, the presence of the `lua/`
+        -- directory, and only then for the `.git` directory. It finds my `Projects` directory
+        -- before locating the actual project root, as I have a `lua/` directory for all my
+        -- Lua projects. I find that only looking for the `.git` directory is more consistent.
+        root_dir = lspconfig.util.find_git_ancestor,
+        settings = {
+          Lua = {
+            runtime = {
+              version = "LuaJIT",
+              path = vim.split(package.path, ";"),
+            },
+            workspace = {
+              checkThirdParty = false,
+              library = { vim.env.VIMRUNTIME, vim.fn.stdpath "data" .. "/lazy" },
+            },
+            telemetry = {
+              enable = false,
+            },
+          },
+        },
+      }
+      lspconfig.basedpyright.setup {}
+      lspconfig.ruff_lsp.setup {}
+      lspconfig.marksman.setup {}
+      lspconfig.ltex.setup {}
+      lspconfig.verible.setup {
+        cmd = { "verible-verilog-ls", "--rules_config_search", "--indentation_spaces=4" },
+        root_dir = lspconfig.util.root_pattern { "verible.filelist", ".git" },
+      }
+    end,
+    event = { "BufReadPost", "BufNewFile", "BufWritePre", "VeryLazy" },
+  },
+  {
+    "folke/lazydev.nvim",
+    ft = "lua", -- only load on lua files
+    opts = {
+      library = {
+        -- See the configuration section for more details
+        -- Load luvit types when the `vim.uv` word is found
+        { path = "luvit-meta/library", words = { "vim%.uv" } },
+      },
+    },
+  },
+  { "Bilal2453/luvit-meta", lazy = true }, -- optional `vim.uv` typings
+
+  {
+    "stevearc/conform.nvim",
+    opts = {
+      formatters_by_ft = {
+        lua = { "stylua" },
+        python = { "black" },
+        hcl = { "terragrunt_hclfmt" },
+      },
+      format_on_save = {},
+    },
+    event = "VeryLazy",
+  },
+
+  {
+    "stevearc/oil.nvim",
+    init = function()
+      vim.g.loaded_netrw = 1
+      vim.g.loaded_netrwPlugin = 1
+    end,
+    opts = {
+      default_file_explorer = true,
+      view_options = {
+        show_hidden = true,
+      },
+      keymaps = {
+        ["<C-h>"] = false,
+        ["<C-l>"] = false,
+        ["<C-p>"] = false,
+      },
+    },
+    event = "VeryLazy",
+    keys = {
+      { "-", "<Cmd>Oil<CR>", desc = "Open parent directory" },
+    },
+  },
+
+  { "shortcuts/no-neck-pain.nvim", version = "*", event = "VeryLazy" },
+  { "preservim/vim-pencil", event = "User prose" },
+
+  {
+    "epwalsh/obsidian.nvim",
+    opts = {
+      workspaces = {
+        {
+          name = "Vault",
+          path = vim.fs.normalize "~/Documents/Obsidian Vault",
+        },
+      },
+      notes_subdir = "00 - Inbox",
+      new_notes_location = "notes_subdir",
+      ---@param title string|?
+      ---@return string
+      note_id_func = function(title)
+        local suffix = ""
+        if title ~= nil then
+          suffix = title:gsub("[^A-Za-z0-9- ]", "")
+        else
+          for _ = 1, 4 do
+            suffix = suffix .. string.char(math.random(65, 90))
+          end
+        end
+        return tostring(os.date "%Y%m%d%H%M%S") .. " " .. suffix
+      end,
+      ---@param note obsidian.Note
+      note_frontmatter_func = function(note)
+        -- Add the title of the note as an alias.
+        if note.title then note:add_alias(note.title) end
+        -- Add the date of the note as an alias.
+        local id_date = string.match(note.id, "^[0-9]*")
+        if #id_date > 0 then note:add_alias(id_date) end
+
+        local out = { id = note.id, aliases = note.aliases, tags = note.tags }
+
+        -- `note.metadata` contains any manually added fields in the frontmatter.
+        -- So here we just make sure those fields are kept in the frontmatter.
+        if note.metadata ~= nil and not vim.tbl_isempty(note.metadata) then
+          for k, v in pairs(note.metadata) do
+            out[k] = v
+          end
+        end
+
+        return out
+      end,
+      wiki_link_func = "use_alias_only",
+      picker = false,
+      ui = {
+        checkboxes = {
+          [" "] = { char = "📫", hl_group = "ObsidianTodo" }, -- closed mailbox with raised flag
+          ["x"] = { char = "✅", hl_group = "ObsidianDone" }, -- check mark button
+          ["!"] = { char = "❗", hl_group = "ObsidianImportant" }, -- exclamation mark
+          ["?"] = { char = "❓", hl_group = "ObsidianImportant" }, -- question mark
+        },
+        external_link_icon = { char = "🕊", hl_group = "ObsidianExtLinkIcon" }, -- dove
+      },
+    },
+    event = {
+      "BufReadPre " .. vim.fs.normalize "~/Documents/Obsidian Vault" .. "/*.md",
+      "BufNewFile " .. vim.fs.normalize "~/Documents/Obsidian Vault" .. "/*.md",
+    },
+    keys = {
+      { "<Leader>on", "<Cmd>ObsidianNew<CR>" },
+      { "<Leader>og", ":grep -g !.git -g !.obsidian -g '!04 - Archive' " },
+    },
+    version = "*", -- recommended, use latest release instead of latest commit
+  },
+
+  {
+    "m4xshen/hardtime.nvim",
+    enabled = false,
+    opts = {},
+  },
+  { "MunifTanjim/nui.nvim", lazy = true },
+  { "nvim-lua/plenary.nvim", lazy = true },
+}, {
   -- colorscheme that will be used when installing plugins.
   install = { colorscheme = { "habamax" } },
-}
+})
 
 -- vim: ts=2 sts=2 sw=2 et
