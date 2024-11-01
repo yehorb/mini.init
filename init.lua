@@ -214,26 +214,27 @@ require("lazy").setup {
     { "nvim-treesitter/playground", lazy = true },
     {
       "nvim-treesitter/nvim-treesitter",
-      config = function()
-        require("nvim-treesitter.install").prefer_git = false
-        require("nvim-treesitter.configs").setup { ---@diagnostic disable-line:missing-fields
-          ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "markdown", "markdown_inline" },
-          textobjects = {
-            select = {
-              enable = true,
-              keymaps = {
-                ["ab"] = "@block.outer",
-                ["ib"] = "@block.inner",
-                ["af"] = "@function.outer",
-                ["if"] = "@function.inner",
-              },
+      opts = {
+        ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "markdown", "markdown_inline" },
+        textobjects = {
+          select = {
+            enable = true,
+            keymaps = {
+              ["ab"] = "@block.outer",
+              ["ib"] = "@block.inner",
+              ["af"] = "@function.outer",
+              ["if"] = "@function.inner",
             },
           },
-          highlight = {
-            enable = true,
-            additional_vim_regex_highlighting = { "markdown" },
-          },
-        }
+        },
+        highlight = {
+          enable = true,
+          additional_vim_regex_highlighting = { "markdown" },
+        },
+      },
+      config = function(_, opts)
+        require("nvim-treesitter.install").prefer_git = false
+        require("nvim-treesitter.configs").setup(opts)
       end,
       build = function()
         local install = require "nvim-treesitter.install"
