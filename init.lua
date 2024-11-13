@@ -5,8 +5,8 @@ vim.o.number = true
 
 vim.o.undofile = true
 
-vim.opt.ignorecase = true
-vim.opt.smartcase = true
+vim.o.ignorecase = true
+vim.o.smartcase = true
 
 vim.o.expandtab = true
 vim.o.tabstop = 4
@@ -67,7 +67,7 @@ vim.o.sidescrolloff = 8
 vim.o.startofline = true
 
 -- Set <EOL> to <CR> by default
-vim.opt.fileformat = "unix"
+vim.o.fileformat = "unix"
 -- Allow the detection of <CR><LF> <EOL>
 vim.opt.fileformats = { "unix", "dos" }
 
