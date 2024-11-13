@@ -468,6 +468,11 @@ require("lazy").setup({
     },
     version = "*", -- recommended, use latest release instead of latest commit
   },
+
+  {
+    "lervag/vimtex",
+    lazy = false,
+  },
 }, {
   -- colorscheme that will be used when installing plugins.
   install = { colorscheme = { "habamax" } },
