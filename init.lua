@@ -339,7 +339,7 @@ require("lazy").setup({
         },
       }
       lspconfig.basedpyright.setup {}
-      lspconfig.ruff_lsp.setup {}
+      lspconfig.ruff.setup {}
       lspconfig.marksman.setup {}
       lspconfig.ltex.setup {}
       lspconfig.verible.setup {
