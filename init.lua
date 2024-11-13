@@ -401,6 +401,7 @@ require("lazy").setup({
   { "shortcuts/no-neck-pain.nvim", version = "*", event = "VeryLazy" },
   { "preservim/vim-pencil", event = "User prose" },
 
+  { "nvim-lua/plenary.nvim", lazy = true },
   {
     "epwalsh/obsidian.nvim",
     opts = {
@@ -467,14 +468,6 @@ require("lazy").setup({
     },
     version = "*", -- recommended, use latest release instead of latest commit
   },
-
-  {
-    "m4xshen/hardtime.nvim",
-    enabled = false,
-    opts = {},
-  },
-  { "MunifTanjim/nui.nvim", lazy = true },
-  { "nvim-lua/plenary.nvim", lazy = true },
 }, {
   -- colorscheme that will be used when installing plugins.
   install = { colorscheme = { "habamax" } },
