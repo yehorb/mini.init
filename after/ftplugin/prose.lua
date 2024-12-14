@@ -9,9 +9,9 @@ function M.init()
 
   vim.o.laststatus = 3 -- Show single statusline for all windows. Makes focused pane look better
 
-  vim.o.expandtab = true
-  vim.o.tabstop = 2
-  vim.o.shiftwidth = 2
+  vim.bo.expandtab = true
+  vim.bo.tabstop = 2
+  vim.bo.shiftwidth = 2
 end
 
 function M.focus_current_pane()
