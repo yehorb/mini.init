@@ -228,7 +228,12 @@ require("lazy").setup({
       },
       highlight = {
         enable = true,
-        additional_vim_regex_highlighting = { "markdown", "markdown_inline" },
+        disable = { "latex" },
+        additional_vim_regex_highlighting = {
+          "latex",
+          "markdown",
+          "markdown_inline",
+        },
       },
     },
     config = function(_, opts)
