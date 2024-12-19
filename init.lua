@@ -134,15 +134,9 @@ vim.api.nvim_create_autocmd("BufReadPost", {
   callback = function() vim.wo.wrap = false end,
 })
 
--- Custom filetype prose-oriented file types
-vim.api.nvim_create_autocmd("FileType", {
-  group = augroup,
-  pattern = { "markdown" },
-  callback = function()
-    vim.api.nvim_exec_autocmds("User", { pattern = "prose" })
-    vim.api.nvim_exec_autocmds("FileType", { pattern = "prose" })
-  end,
-})
+local filetype = {
+  prose = { "markdown", "tex" },
+}
 
 -- [[ Install lazy.nvim plugin manager ]]
 -- mini.deps plugin manager provides simpler and more explicit plugin management. Manually managing the complexity of
@@ -400,7 +394,7 @@ require("lazy").setup({
   },
 
   { "shortcuts/no-neck-pain.nvim", version = "*", event = "VeryLazy" },
-  { "preservim/vim-pencil", event = "User prose" },
+  { "preservim/vim-pencil", ft = filetype.prose },
 
   { "nvim-lua/plenary.nvim", lazy = true },
   {
