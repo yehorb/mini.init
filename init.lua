@@ -19,7 +19,7 @@ vim.opt.listchars = { eol = "␤", tab = "→ ", trail = "␠", nbsp = "␣", ex
 -- The initial popup menu is mostly used for preview and sanity checks. As I continue
 -- typing, fewer options become available, allowing me to either select a completion
 -- item or continue typing if I don't see the desired option.
-vim.o.completeopt = "menuone,preview,noselect"
+vim.o.completeopt = "menu,menuone,preview,noselect"
 -- Limit the height of the popup menu.
 vim.o.pumheight = 15
 
@@ -142,6 +142,7 @@ vim.api.nvim_create_autocmd("FileType", {
   group = augroup,
   pattern = filetype.prose,
   callback = function()
+    -- vim.defer_fn(function() vim.cmd.runtime "after/ftplugin/prose.lua" end, 100)
     vim.cmd.runtime "after/ftplugin/prose.lua"
   end,
 })
