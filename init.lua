@@ -138,6 +138,14 @@ local filetype = {
   prose = { "markdown", "tex" },
 }
 
+vim.api.nvim_create_autocmd("FileType", {
+  group = augroup,
+  pattern = filetype.prose,
+  callback = function()
+    vim.cmd.runtime "after/ftplugin/prose.lua"
+  end,
+})
+
 -- [[ Install lazy.nvim plugin manager ]]
 -- mini.deps plugin manager provides simpler and more explicit plugin management. Manually managing the complexity of
 -- loading modules in the correct order and at the right time is certainly not for everyone, but it may be easier to
