@@ -123,7 +123,7 @@ vim.api.nvim_create_autocmd("InsertEnter", {
     vim.defer_fn(function()
       if vim.fn.bufexists(ev.buf) ~= 1 then return end
       if vim.bo[ev.buf].omnifunc == "" then vim.bo[ev.buf].omnifunc = "syntaxcomplete#Complete" end
-    end, 100)
+    end, 0)
   end,
   desc = "Set *ft-syntax-omni* omnifunc",
 })
