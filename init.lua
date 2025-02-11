@@ -226,8 +226,12 @@ require("lazy").setup({
         snippets = {
           gen_loader.from_lang(),
         },
-        mappings = { expand = "", jump_next = "", jump_prev = "" },
+        mappings = { expand = "", jump_next = "<C-l>", jump_prev = "<C-h>" },
       }
+      vim.api.nvim_create_autocmd("InsertLeave", {
+        group = augroup,
+        callback = function() MiniSnippets.session.stop() end,
+      })
     end,
     event = "VeryLazy",
   },
@@ -530,14 +534,6 @@ require("lazy").setup({
           ["<C-n>"] = cmp.mapping.select_next_item(),
           ["<C-p>"] = cmp.mapping.select_prev_item(),
           ["<C-y>"] = cmp.mapping.confirm { select = true },
-          ["<C-l>"] = cmp.mapping(function()
-            local is_active = MiniSnippets.session.get() ~= nil
-            if is_active then MiniSnippets.session.jump "next" end
-          end, { "i", "s" }),
-          ["<C-h>"] = cmp.mapping(function()
-            local is_active = MiniSnippets.session.get() ~= nil
-            if is_active then MiniSnippets.session.jump "prev" end
-          end, { "i", "s" }),
         },
         sources = {
           {
