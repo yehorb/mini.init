@@ -192,7 +192,20 @@ require("lazy").setup({
     priority = 1000, -- make sure to load this before all the other start plugins
     config = function()
       -- load the colorscheme here
-      vim.cmd [[colorscheme nord]]
+      vim.g.nord_contrast = true
+      vim.g.nord_uniform_diff_background = true
+
+      require("nord").set()
+      vim.cmd [[highlight! link Whitespace DiagnosticError]] -- Highlight nonprinting characters
+    end,
+  },
+  {
+    "AlexvZyl/nordic.nvim",
+    enabled = false,
+    lazy = false,
+    priority = 1000,
+    config = function()
+      require("nordic").load()
       vim.cmd [[highlight! link Whitespace DiagnosticError]] -- Highlight nonprinting characters
     end,
   },
