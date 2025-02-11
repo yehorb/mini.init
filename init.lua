@@ -220,6 +220,13 @@ require("lazy").setup({
       require("mini.ai").setup { n_lines = 500 }
       require("mini.surround").setup()
       require("mini.statusline").setup { use_icons = false }
+      local gen_loader = require("mini.snippets").gen_loader
+      require("mini.snippets").setup {
+        snippets = {
+          gen_loader.from_lang(),
+        },
+        mappings = { expand = "", jump_next = "", jump_prev = "" },
+      }
     end,
     event = "VeryLazy",
   },
@@ -320,6 +327,10 @@ require("lazy").setup({
             end,
           })
         end
+
+        local capabilities = vim.lsp.protocol.make_client_capabilities()
+        capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
+        client.capabilities = capabilities
 
         -- Disable duplicate diagnostics from verible
         -- https://github.com/neovim/neovim/issues/29927
@@ -489,6 +500,58 @@ require("lazy").setup({
     "lervag/vimtex",
     lazy = false,
   },
+
+  { "hrsh7th/cmp-nvim-lsp" },
+  { "hrsh7th/cmp-buffer", enabled = false },
+  { url = "https://codeberg.org/FelipeLema/cmp-async-path.git" },
+  { "abeldekat/cmp-mini-snippets" },
+  {
+    "hrsh7th/nvim-cmp",
+    version = false, -- last release is way too old
+    event = "InsertEnter",
+    opts = function()
+      local cmp = require "cmp"
+      return {
+        snippet = {
+          expand = function(args)
+            local insert = MiniSnippets.config.expand.insert or MiniSnippets.default_insert
+            insert { body = args.body } -- Insert at cursor
+            cmp.resubscribe { "TextChangedI", "TextChangedP" }
+            require("cmp.config").set_onetime { sources = {} }
+          end,
+        },
+        completion = {
+          completeopt = vim.o.completeopt,
+        },
+        mapping = {
+          ["<C-Space>"] = cmp.mapping.complete(),
+          ["<C-x>"] = cmp.mapping.close(),
+          ["<C-n>"] = cmp.mapping.select_next_item(),
+          ["<C-p>"] = cmp.mapping.select_prev_item(),
+          ["<C-y>"] = cmp.mapping.confirm { select = true },
+          ["<C-l>"] = cmp.mapping(function()
+            local is_active = MiniSnippets.session.get() ~= nil
+            if is_active then MiniSnippets.session.jump "next" end
+          end, { "i", "s" }),
+          ["<C-h>"] = cmp.mapping(function()
+            local is_active = MiniSnippets.session.get() ~= nil
+            if is_active then MiniSnippets.session.jump "prev" end
+          end, { "i", "s" }),
+        },
+        sources = {
+          {
+            name = "lazydev",
+            -- set group index to 0 to skip loading LuaLS completions as lazydev recommends it
+            group_index = 0,
+          },
+          { name = "nvim_lsp" },
+          { name = "mini_snippets" },
+          { name = "async_path" },
+        },
+      }
+    end,
+  },
+  { "rafamadriz/friendly-snippets" },
 }, {
   -- colorscheme that will be used when installing plugins.
   install = { colorscheme = { "habamax" } },
