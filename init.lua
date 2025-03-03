@@ -372,8 +372,9 @@ require("lazy").setup({
       }
       lspconfig.basedpyright.setup {}
       lspconfig.ruff.setup {}
-      lspconfig.marksman.setup {}
-      lspconfig.ltex.setup {}
+      lspconfig.ltex.setup {
+        cmd = { "ltex-ls-plus" },
+      }
       lspconfig.verible.setup {
         cmd = { "verible-verilog-ls", "--rules_config_search", "--indentation_spaces=4" },
         root_dir = lspconfig.util.root_pattern { "verible.filelist", ".git" },
