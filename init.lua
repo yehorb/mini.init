@@ -530,7 +530,7 @@ require("lazy").setup({
         },
         mapping = {
           ["<C-Space>"] = cmp.mapping.complete(),
-          ["<C-x>"] = cmp.mapping.close(),
+          ["<C-e>"] = cmp.mapping.close(),
           ["<C-n>"] = cmp.mapping.select_next_item(),
           ["<C-p>"] = cmp.mapping.select_prev_item(),
           ["<C-y>"] = cmp.mapping.confirm { select = true },
