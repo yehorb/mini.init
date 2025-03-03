@@ -549,6 +549,28 @@ require("lazy").setup({
     end,
   },
   { "rafamadriz/friendly-snippets" },
+
+  { "nvim-treesitter/nvim-treesitter" },
+  { "stevearc/dressing.nvim" },
+  { "nvim-lua/plenary.nvim" },
+  { "MunifTanjim/nui.nvim" },
+  { "ibhagwan/fzf-lua" },
+  {
+    "zbirenbaum/copilot.lua",
+    event = "VeryLazy",
+    opts = {},
+  },
+  {
+    "yetone/avante.nvim",
+    event = "VeryLazy",
+    version = false,
+    opts = {
+      provider = "copilot",
+    },
+    build = vim.uv.os_uname().version:match "Windows"
+        and "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false"
+      or "make",
+  },
 }, {
   -- colorscheme that will be used when installing plugins.
   install = { colorscheme = { "habamax" } },
