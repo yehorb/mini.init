@@ -585,6 +585,19 @@ require("lazy").setup({
         and "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false"
       or "make",
   },
+
+  { "nvim-treesitter/nvim-treesitter" },
+  {
+    -- adding the otter plugin for future use
+    enabled = false,
+    "jmbuhr/otter.nvim",
+    opts = {
+      buffers = {
+        set_filetype = true,
+        write_to_disk = true,
+      },
+    },
+  },
 }, {
   -- colorscheme that will be used when installing plugins.
   install = { colorscheme = { "habamax" } },
