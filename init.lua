@@ -378,6 +378,15 @@ require("lazy").setup({
         cmd = { "verible-verilog-ls", "--rules_config_search", "--indentation_spaces=4" },
         root_dir = lspconfig.util.root_pattern { "verible.filelist", ".git" },
       }
+      lspconfig.nixd.setup {
+        settings = {
+          nixd = {
+            formatting = {
+              command = { "nixfmt" },
+            },
+          },
+        },
+      }
     end,
     event = { "BufReadPost", "BufNewFile", "BufWritePre", "VeryLazy" },
   },
