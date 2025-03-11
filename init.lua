@@ -289,6 +289,10 @@ require("lazy").setup({
       local path = require "mason-core.path"
       require("mason").setup {
         install_root_dir = path.concat { vim.env.USERPROFILE or vim.env.HOME, "Tools", "mason" },
+        registries = {
+          "github:mason-org/mason-registry",
+          "file:" .. path.concat { vim.fn.fnamemodify(vim.env.MYVIMRC, ":h"), "mason" },
+        },
       }
       require("mason-lspconfig").setup()
 
