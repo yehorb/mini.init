@@ -416,6 +416,7 @@ require("lazy").setup({
         lua = { "stylua" },
         python = { "black" },
         hcl = { "terragrunt_hclfmt" },
+        nix = { lsp_format = "prefer" },
       },
       format_on_save = {},
     },
