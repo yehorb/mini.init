@@ -392,6 +392,7 @@ require("lazy").setup({
           },
         },
       }
+      lspconfig.harper_ls.setup {}
     end,
     event = { "BufReadPost", "BufNewFile", "BufWritePre", "VeryLazy" },
   },
