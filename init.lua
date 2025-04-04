@@ -278,7 +278,7 @@ require("lazy").setup({
       local shell = require "nvim-treesitter.shell_command_selectors"
       local cc = shell.select_executable(install.compilers)
       if not cc then
-        vim.api.nvim_err_writeln "No C compiler found!"
+        vim.api.nvim_echo({ { "No C compiler found!" } }, false, { err = true })
         return
       end
       vim.cmd [[TSUpdate]]
