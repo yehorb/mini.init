@@ -528,10 +528,10 @@ require("lazy").setup({
     lazy = false,
   },
 
-  { "hrsh7th/cmp-nvim-lsp" },
+  { "hrsh7th/cmp-nvim-lsp", lazy = true },
   { "hrsh7th/cmp-buffer", enabled = false },
-  { url = "https://codeberg.org/FelipeLema/cmp-async-path.git" },
-  { "abeldekat/cmp-mini-snippets" },
+  { url = "https://codeberg.org/FelipeLema/cmp-async-path.git", lazy = true },
+  { "abeldekat/cmp-mini-snippets", lazy = true },
   {
     "hrsh7th/nvim-cmp",
     version = false, -- last release is way too old
