@@ -453,7 +453,7 @@ require("lazy").setup({
   },
 
   { "shortcuts/no-neck-pain.nvim", version = "*", event = "VeryLazy" },
-  { "preservim/vim-pencil", ft = filetype.prose },
+  { "preservim/vim-pencil", enabled = false, ft = filetype.prose },
 
   { "nvim-lua/plenary.nvim", lazy = true },
   {
