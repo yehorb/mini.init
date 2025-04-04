@@ -592,9 +592,7 @@ require("lazy").setup({
       or "make",
   },
 
-  { "nvim-treesitter/nvim-treesitter" },
   {
-    -- adding the otter plugin for future use
     enabled = false,
     "jmbuhr/otter.nvim",
     opts = {
