@@ -572,19 +572,17 @@ require("lazy").setup({
   },
   { "rafamadriz/friendly-snippets" },
 
-  { "nvim-treesitter/nvim-treesitter" },
-  { "stevearc/dressing.nvim" },
-  { "nvim-lua/plenary.nvim" },
-  { "MunifTanjim/nui.nvim" },
-  { "ibhagwan/fzf-lua" },
+  { "stevearc/dressing.nvim", lazy = true },
+  { "MunifTanjim/nui.nvim", lazy = true },
+  { "ibhagwan/fzf-lua", lazy = true },
   {
     "zbirenbaum/copilot.lua",
-    event = "VeryLazy",
+    lazy = true,
     opts = {},
   },
   {
     "yetone/avante.nvim",
-    event = "VeryLazy",
+    lazy = true,
     version = false,
     opts = {
       provider = "copilot",
