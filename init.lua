@@ -14,7 +14,15 @@ vim.o.shiftwidth = 4
 
 vim.o.list = true
 vim.o.wrap = false
-vim.opt.listchars = { eol = "␤", tab = "→ ", trail = "␠", nbsp = "␣", extends = "…", precedes = "…" }
+vim.opt.listchars = {
+  eol = "␤",
+  tab = "→ ",
+  trail = "␠",
+  extends = "…",
+  precedes = "…",
+  conceal = "⬚",
+  nbsp = "␣",
+}
 
 -- The initial popup menu is mostly used for preview and sanity checks. As I continue
 -- typing, fewer options become available, allowing me to either select a completion
