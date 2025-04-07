@@ -155,10 +155,7 @@ local filetype = {
 vim.api.nvim_create_autocmd("FileType", {
   group = augroup,
   pattern = filetype.prose,
-  callback = function()
-    -- vim.defer_fn(function() vim.cmd.runtime "after/ftplugin/prose.lua" end, 100)
-    vim.cmd.runtime "after/ftplugin/prose.lua"
-  end,
+  callback = function() vim.cmd.runtime "after/ftplugin/prose.lua" end,
 })
 
 -- [[ Install lazy.nvim plugin manager ]]
