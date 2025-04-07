@@ -234,10 +234,12 @@ require("lazy").setup({
       require("mini.ai").setup { n_lines = 500 }
       require("mini.surround").setup()
       require("mini.statusline").setup { use_icons = false }
+      local latex_patterns = { "latex/**/*.json", "**/latex.json" }
+      local lang_patterns = { tex = latex_patterns, plaintex = latex_patterns }
       local gen_loader = require("mini.snippets").gen_loader
       require("mini.snippets").setup {
         snippets = {
-          gen_loader.from_lang(),
+          gen_loader.from_lang { lang_patterns = lang_patterns },
         },
         mappings = { expand = "", jump_next = "<C-l>", jump_prev = "<C-h>" },
       }
