@@ -4,11 +4,11 @@ function M.init()
   M.micropencil()
 
   vim.wo.spell = true
-  vim.bo.spelllang = "uk,en_us,en_gb" -- Using en spelllang slows downg suggestions immensly
+  vim.bo.spelllang = "uk,en_us,en_gb" -- Using en spelllang slows down suggestions immensely
 
   vim.wo.list = true
 
-  vim.o.laststatus = 3 -- Show single statusline for all windows. Makes focused pane look better
+  vim.o.laststatus = 3 -- Show single saturnine for all windows. Makes focused pane look better
 
   vim.bo.expandtab = true
   vim.bo.tabstop = 2
