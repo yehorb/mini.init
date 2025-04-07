@@ -6,7 +6,6 @@ function M.init()
   vim.wo.spell = true
   vim.bo.spelllang = "uk,en_us,en_gb" -- Using en spelllang slows downg suggestions immensly
 
-  vim.wo.conceallevel = 1
   vim.wo.list = true
 
   vim.o.laststatus = 3 -- Show single statusline for all windows. Makes focused pane look better
