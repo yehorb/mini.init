@@ -511,6 +511,7 @@ require("lazy").setup({
       wiki_link_func = "use_alias_only",
       picker = false,
       ui = {
+        enable = false,
         checkboxes = {
           [" "] = { char = "📫", hl_group = "ObsidianTodo" }, -- closed mailbox with raised flag
           ["x"] = { char = "✅", hl_group = "ObsidianDone" }, -- check mark button
