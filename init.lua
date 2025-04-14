@@ -232,7 +232,22 @@ require("lazy").setup({
       require("mini.diff").setup()
       require("mini.git").setup()
       require("mini.ai").setup { n_lines = 500 }
-      require("mini.surround").setup()
+
+      -- Setup similar to 'tpope/vim-surround'
+      require("mini.surround").setup {
+        mappings = {
+          add = "ys",
+          delete = "ds",
+          replace = "cs",
+        },
+        search_method = "cover_or_next",
+      }
+      -- Remap adding surrounding to Visual mode selection
+      vim.keymap.del("x", "ys")
+      vim.keymap.set("x", "S", [[:<C-u>lua MiniSurround.add('visual')<CR>]], { silent = true })
+      -- Make special mapping for "add surrounding for line"
+      vim.keymap.set("n", "yss", "ys_", { remap = true })
+
       require("mini.statusline").setup { use_icons = false }
       local latex_patterns = { "latex/**/*.json", "**/latex.json" }
       local lang_patterns = { tex = latex_patterns, plaintex = latex_patterns }
