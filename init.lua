@@ -372,7 +372,7 @@ require("lazy").setup({
 
         -- Disable duplicate diagnostics from verible
         -- https://github.com/neovim/neovim/issues/29927
-        if client.name == "verible" then client.server_capabilities.diagnosticProvider = nil end
+        -- if client.name == "verible" then client.server_capabilities.diagnosticProvider = nil end
       end
 
       vim.api.nvim_create_autocmd("LspAttach", {
@@ -381,12 +381,12 @@ require("lazy").setup({
       })
 
       local lspconfig = require "lspconfig"
-      lspconfig.lua_ls.setup {
+      vim.lsp.config("lua_ls", {
         -- The default `root_dir` checks for Lua configuration files, the presence of the `lua/`
         -- directory, and only then for the `.git` directory. It finds my `Projects` directory
         -- before locating the actual project root, as I have a `lua/` directory for all my
         -- Lua projects. I find that only looking for the `.git` directory is more consistent.
-        root_dir = lspconfig.util.find_git_ancestor,
+        root_dir = lspconfig.util.root_pattern { ".git" },
         settings = {
           Lua = {
             runtime = {
@@ -402,17 +402,20 @@ require("lazy").setup({
             },
           },
         },
-      }
-      lspconfig.basedpyright.setup {}
-      lspconfig.ruff.setup {}
-      lspconfig.ltex.setup {
+      })
+      vim.lsp.enable "lua_ls"
+      vim.lsp.enable "basedpyright"
+      vim.lsp.enable "ruff"
+      vim.lsp.config("ltex", {
         cmd = { "ltex-ls-plus" },
-      }
-      lspconfig.verible.setup {
+      })
+      vim.lsp.enable "ltex"
+      vim.lsp.config("verible", {
         cmd = { "verible-verilog-ls", "--rules_config_search", "--indentation_spaces=4" },
         root_dir = lspconfig.util.root_pattern { "verible.filelist", ".git" },
-      }
-      lspconfig.nixd.setup {
+      })
+      vim.lsp.enable "verible"
+      vim.lsp.config("nixd", {
         settings = {
           nixd = {
             formatting = {
@@ -420,8 +423,9 @@ require("lazy").setup({
             },
           },
         },
-      }
-      lspconfig.harper_ls.setup {}
+      })
+      vim.lsp.enable "nixd"
+      vim.lsp.enable "harper_ls"
     end,
     event = { "BufReadPost", "BufNewFile", "BufWritePre", "VeryLazy" },
   },
