@@ -86,6 +86,8 @@ vim.o.fileformat = "unix"
 -- Allow the detection of <CR><LF> <EOL>
 vim.opt.fileformats = { "unix", "dos" }
 
+vim.g.health = { style = "float" }
+
 -- [[ Basic Keymaps ]]
 -- Keybinds to make split navigation easier.
 vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
