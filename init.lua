@@ -380,13 +380,14 @@ require("lazy").setup({
         callback = on_attach,
       })
 
-      local lspconfig = require "lspconfig"
+      -- root_dir is evil now
+      -- If a function, it is passed the buffer number and a callback argument which must be called with the value of root_dir to use.
+      -- **The LSP server will not be started until the callback is called.**
       vim.lsp.config("lua_ls", {
         -- The default `root_dir` checks for Lua configuration files, the presence of the `lua/`
         -- directory, and only then for the `.git` directory. It finds my `Projects` directory
         -- before locating the actual project root, as I have a `lua/` directory for all my
         -- Lua projects. I find that only looking for the `.git` directory is more consistent.
-        root_dir = lspconfig.util.root_pattern { ".git" },
         settings = {
           Lua = {
             runtime = {
@@ -412,7 +413,7 @@ require("lazy").setup({
       vim.lsp.enable "ltex"
       vim.lsp.config("verible", {
         cmd = { "verible-verilog-ls", "--rules_config_search", "--indentation_spaces=4" },
-        root_dir = lspconfig.util.root_pattern { "verible.filelist", ".git" },
+        root_markers = { "verible.filelist", ".git" },
       })
       vim.lsp.enable "verible"
       vim.lsp.config("nixd", {
