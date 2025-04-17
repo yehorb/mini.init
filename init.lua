@@ -126,7 +126,7 @@ cnoremap <expr> <c-p> wildmenumode() ? "\<c-p>" : "\<up>"
 local augroup = vim.api.nvim_create_augroup("vimrc", { clear = true })
 vim.api.nvim_create_autocmd("TextYankPost", {
   group = augroup,
-  callback = function() vim.highlight.on_yank() end,
+  callback = function() vim.hl.on_yank() end,
   desc = "Briefly highlight yanked text",
 })
 
@@ -343,7 +343,7 @@ require("lazy").setup({
           { buffer = ev.buf, desc = "[L]SP: Code [A]ction" }
         )
 
-        if client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
+        if client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
           local hl_group = vim.api.nvim_create_augroup("vimrc-lsp-hl", { clear = true })
           vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
             buffer = ev.buf,
