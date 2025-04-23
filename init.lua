@@ -330,6 +330,7 @@ require("lazy").setup({
     "neovim/nvim-lspconfig",
     config = function()
       local path = require "mason-core.path"
+      ---@diagnostic disable-next-line: missing-fields
       require("mason").setup {
         install_root_dir = path.concat { vim.env.USERPROFILE or vim.env.HOME, "Tools", "mason" },
         registries = {
@@ -348,7 +349,7 @@ require("lazy").setup({
           "n",
           "K",
           function() vim.lsp.buf.hover { border = "rounded", silent = true } end,
-          { buffer = args.buf, desc = "Customize default LSP hover" }
+          { buffer = args.buf, desc = "Customize the default LSP hover" }
         )
 
         vim.keymap.set(
