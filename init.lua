@@ -339,15 +339,17 @@ require("lazy").setup({
       }
       require("mason-lspconfig").setup()
 
-      vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-        border = "rounded",
-        silent = true,
-      })
-
       local on_attach = function(args)
         local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
 
         client.flags.debounce_text_changes = 500
+
+        vim.keymap.set(
+          "n",
+          "K",
+          function() vim.lsp.buf.hover { border = "rounded", silent = true } end,
+          { buffer = args.buf, desc = "Customize default LSP hover" }
+        )
 
         vim.keymap.set(
           "n",
