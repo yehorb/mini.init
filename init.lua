@@ -134,11 +134,11 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 
 vim.api.nvim_create_autocmd("InsertEnter", {
   group = augroup,
-  callback = function(ev)
+  callback = function(args)
     -- Defer the execution to allow *lsp-defaults* to set omnifunc, if available
     vim.defer_fn(function()
-      if vim.fn.bufexists(ev.buf) ~= 1 then return end
-      if vim.bo[ev.buf].omnifunc == "" then vim.bo[ev.buf].omnifunc = "syntaxcomplete#Complete" end
+      if vim.fn.bufexists(args.buf) ~= 1 then return end
+      if vim.bo[args.buf].omnifunc == "" then vim.bo[args.buf].omnifunc = "syntaxcomplete#Complete" end
     end, 0)
   end,
   desc = "Set *ft-syntax-omni* omnifunc",
@@ -332,9 +332,8 @@ require("lazy").setup({
         silent = true,
       })
 
-      local on_attach = function(ev)
-        local client = vim.lsp.get_client_by_id(ev.data.client_id)
-        if client == nil then return end
+      local on_attach = function(args)
+        local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
 
         client.flags.debounce_text_changes = 500
 
@@ -342,28 +341,28 @@ require("lazy").setup({
           "n",
           "<Leader>la",
           function() vim.lsp.buf.code_action() end,
-          { buffer = ev.buf, desc = "[L]SP: Code [A]ction" }
+          { buffer = args.buf, desc = "[L]SP: Code [A]ction" }
         )
 
         if client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
           local hl_group = vim.api.nvim_create_augroup("vimrc-lsp-hl", { clear = true })
           vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-            buffer = ev.buf,
+            buffer = args.buf,
             group = hl_group,
             callback = vim.lsp.buf.document_highlight,
           })
 
           vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
-            buffer = ev.buf,
+            buffer = args.buf,
             group = hl_group,
             callback = vim.lsp.buf.clear_references,
           })
 
           vim.api.nvim_create_autocmd("LspDetach", {
             group = hl_group,
-            callback = function(event2)
+            callback = function(args2)
               vim.lsp.buf.clear_references()
-              vim.api.nvim_clear_autocmds { group = "vimrc-lsp-hl", buffer = event2.buf }
+              vim.api.nvim_clear_autocmds { group = "vimrc-lsp-hl", buffer = args2.buf }
             end,
           })
         end
