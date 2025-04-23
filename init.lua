@@ -231,41 +231,53 @@ require("lazy").setup({
   {
     "echasnovski/mini.nvim",
     config = function()
-      require("mini.diff").setup()
-      require("mini.git").setup()
-      require("mini.ai").setup { n_lines = 500 }
-
-      -- Setup similar to 'tpope/vim-surround'
-      require("mini.surround").setup {
-        mappings = {
-          add = "ys",
-          delete = "ds",
-          replace = "cs",
-        },
-        search_method = "cover_or_next",
-      }
-      -- Remap adding surrounding to Visual mode selection
-      vim.keymap.del("x", "ys")
-      vim.keymap.set("x", "S", [[:<C-u>lua MiniSurround.add('visual')<CR>]], { silent = true })
-      -- Make special mapping for "add surrounding for line"
-      vim.keymap.set("n", "yss", "ys_", { remap = true })
-
+      require("mini.starter").setup()
       require("mini.statusline").setup { use_icons = false }
-      local latex_patterns = { "latex/**/*.json", "**/latex.json" }
-      local lang_patterns = { tex = latex_patterns, plaintex = latex_patterns }
-      local gen_loader = require("mini.snippets").gen_loader
-      require("mini.snippets").setup {
-        snippets = {
-          gen_loader.from_lang { lang_patterns = lang_patterns },
-        },
-        mappings = { expand = "", jump_next = "<C-l>", jump_prev = "<C-h>" },
-      }
-      vim.api.nvim_create_autocmd("InsertLeave", {
-        group = augroup,
-        callback = function() MiniSnippets.session.stop() end,
+
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "VeryLazy",
+        callback = function()
+          require("mini.diff").setup()
+          require("mini.git").setup()
+        end,
+      })
+
+      vim.api.nvim_create_autocmd("InsertEnter", {
+        callback = function()
+          require("mini.ai").setup { n_lines = 500 }
+
+          -- Setup similar to 'tpope/vim-surround'
+          require("mini.surround").setup {
+            mappings = {
+              add = "ys",
+              delete = "ds",
+              replace = "cs",
+            },
+            search_method = "cover_or_next",
+          }
+          -- Remap adding surrounding to Visual mode selection
+          vim.keymap.del("x", "ys")
+          vim.keymap.set("x", "S", [[:<C-u>lua MiniSurround.add('visual')<CR>]], { silent = true })
+          -- Make special mapping for "add surrounding for line"
+          vim.keymap.set("n", "yss", "ys_", { remap = true })
+
+          local latex_patterns = { "latex/**/*.json", "**/latex.json" }
+          local lang_patterns = { tex = latex_patterns, plaintex = latex_patterns }
+          local gen_loader = require("mini.snippets").gen_loader
+          require("mini.snippets").setup {
+            snippets = {
+              gen_loader.from_lang { lang_patterns = lang_patterns },
+            },
+            mappings = { expand = "", jump_next = "<C-l>", jump_prev = "<C-h>" },
+          }
+          vim.api.nvim_create_autocmd("InsertLeave", {
+            group = augroup,
+            callback = function() MiniSnippets.session.stop() end,
+          })
+        end,
       })
     end,
-    event = "VeryLazy",
+    lazy = false,
   },
 
   { "nvim-treesitter/nvim-treesitter-textobjects", lazy = true },
