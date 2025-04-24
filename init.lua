@@ -88,6 +88,21 @@ vim.opt.fileformats = { "unix", "dos" }
 
 vim.g.health = { style = "float" }
 
+vim.g.clipboard = vim.fn.has "wsl"
+    and {
+      name = "WslClipboard",
+      copy = {
+        ["*"] = "clip.exe",
+        ["+"] = "clip.exe",
+      },
+      paste = {
+        ["*"] = 'powershell.exe -NoLogo -NoProfile -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+        ["+"] = 'powershell.exe -NoLogo -NoProfile -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+      },
+      cache_enabled = 0,
+    }
+  or nil
+
 -- [[ Basic Keymaps ]]
 -- Keybinds to make split navigation easier.
 vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
