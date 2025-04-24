@@ -338,7 +338,11 @@ require("lazy").setup({
     event = { "BufReadPost", "BufNewFile", "BufWritePre", "VeryLazy" },
   },
 
-  { "j-hui/fidget.nvim", opts = {}, event = "VeryLazy" },
+  {
+    "j-hui/fidget.nvim",
+    opts = { suppress_on_insert = true },
+    event = "VeryLazy",
+  },
   { "williamboman/mason-lspconfig.nvim", lazy = true },
   { "williamboman/mason.nvim", lazy = true },
   {
