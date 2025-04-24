@@ -88,7 +88,7 @@ vim.opt.fileformats = { "unix", "dos" }
 
 vim.g.health = { style = "float" }
 
-vim.g.clipboard = vim.fn.has "wsl"
+vim.g.clipboard = vim.fn.has "wsl" == 1
     and {
       name = "WslClipboard",
       copy = {
