@@ -340,7 +340,7 @@ require("lazy").setup({
 
   {
     "j-hui/fidget.nvim",
-    opts = { suppress_on_insert = true },
+    opts = { progress = { suppress_on_insert = true } },
     event = "VeryLazy",
   },
   { "williamboman/mason-lspconfig.nvim", lazy = true },
