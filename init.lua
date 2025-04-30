@@ -27,7 +27,7 @@ vim.opt.listchars = {
 -- The initial popup menu is mostly used for preview and sanity checks. As I continue
 -- typing, fewer options become available, allowing me to either select a completion
 -- item or continue typing if I don't see the desired option.
-vim.o.completeopt = "menu,menuone,preview,noselect"
+vim.o.completeopt = "menu,menuone,popup"
 -- Limit the height of the popup menu.
 vim.o.pumheight = 15
 
@@ -68,7 +68,7 @@ vim.keymap.set(
   "<Esc><Cmd>set iminsert=0 imsearch=0<CR>",
   { desc = "Turn off :lmap and IM when leaving Insert mode" }
 )
-for _, key in ipairs { "'", "<F10>" } do
+for _, key in ipairs { "''" } do
   vim.keymap.set({ "i", "c" }, key, function() return vim.o.iminsert == 1 and "<C-^>`" or "'" end, {
     expr = true,
     desc = "Turn off :lmap and IM when starting code blocks. Trigger keys correspond to the backtick charater in IM mode",
@@ -602,9 +602,9 @@ require("lazy").setup({
       { url = "https://codeberg.org/FelipeLema/cmp-async-path.git" },
       { "abeldekat/cmp-mini-snippets" },
     },
-    opts = function()
+    config = function()
       local cmp = require "cmp"
-      return {
+      cmp.setup {
         snippet = {
           expand = function(args)
             local insert = MiniSnippets.config.expand.insert or MiniSnippets.default_insert
@@ -612,9 +612,6 @@ require("lazy").setup({
             cmp.resubscribe { "TextChangedI", "TextChangedP" }
             require("cmp.config").set_onetime { sources = {} }
           end,
-        },
-        completion = {
-          completeopt = vim.o.completeopt,
         },
         mapping = {
           ["<C-Space>"] = cmp.mapping.complete(),
@@ -634,6 +631,12 @@ require("lazy").setup({
           { name = "async_path" },
         },
       }
+      cmp.setup.filetype({ "markdown" }, {
+        completion = { autocomplete = false },
+        mapping = {
+          ["<C-x><C-o>"] = cmp.mapping.complete(),
+        },
+      })
     end,
   },
   { "rafamadriz/friendly-snippets" },
