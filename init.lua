@@ -68,12 +68,6 @@ vim.keymap.set(
   "<Esc><Cmd>set iminsert=0 imsearch=0<CR>",
   { desc = "Turn off :lmap and IM when leaving Insert mode" }
 )
-for _, key in ipairs { "''" } do
-  vim.keymap.set({ "i", "c" }, key, function() return vim.o.iminsert == 1 and "<C-^>`" or "'" end, {
-    expr = true,
-    desc = "Turn off :lmap and IM when starting code blocks. Trigger keys correspond to the backtick charater in IM mode",
-  })
-end
 
 vim.o.scrolloff = 8
 vim.o.sidescrolloff = 8

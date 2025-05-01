@@ -74,4 +74,12 @@ end
 M.init()
 _G["ProseMode"] = M
 
+for _, key in ipairs { "''" } do
+  vim.keymap.set({ "i", "c" }, key, function() return vim.o.iminsert == 1 and "<C-^>`" or "'" end, {
+    expr = true,
+    desc = "Turn off :lmap and IM when starting code blocks. Trigger keys correspond to the backtick charater in IM mode",
+    buffer = true,
+  })
+end
+
 return M
