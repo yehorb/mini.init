@@ -235,6 +235,7 @@ require("lazy").setup({
     end,
   },
   -- [[ Step two - load other plugins ]]
+  { "tpope/vim-fugitive", event = "VeryLazy" },
   { "tpope/vim-unimpaired", event = "VeryLazy" },
 
   {
@@ -245,10 +246,7 @@ require("lazy").setup({
 
       vim.api.nvim_create_autocmd("User", {
         pattern = "VeryLazy",
-        callback = function()
-          require("mini.diff").setup()
-          require("mini.git").setup()
-        end,
+        callback = function() require("mini.diff").setup() end,
       })
 
       vim.api.nvim_create_autocmd("InsertEnter", {
