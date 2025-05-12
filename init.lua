@@ -623,7 +623,7 @@ require("lazy").setup({
           { name = "async_path" },
         },
       }
-      cmp.setup.filetype({ "markdown" }, {
+      cmp.setup.filetype(filetype.prose, {
         completion = { autocomplete = false },
         mapping = {
           ["<C-x><C-o>"] = cmp.mapping.complete(),
