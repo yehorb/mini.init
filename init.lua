@@ -590,6 +590,7 @@ require("lazy").setup({
     event = "InsertEnter",
     dependencies = {
       { "hrsh7th/cmp-nvim-lsp" },
+      { "hrsh7th/cmp-omni" },
       { "hrsh7th/cmp-buffer", enabled = false },
       { url = "https://codeberg.org/FelipeLema/cmp-async-path.git" },
       { "abeldekat/cmp-mini-snippets" },
@@ -627,6 +628,17 @@ require("lazy").setup({
         completion = { autocomplete = false },
         mapping = {
           ["<C-x><C-o>"] = cmp.mapping.complete(),
+        },
+        sources = {
+          {
+            name = "omni",
+            option = {
+              disable_omnifuncs = { "v:lua.vim.lsp.omnifunc" },
+            },
+            group_index = 0,
+          },
+          { name = "mini_snippets" },
+          { name = "async_path" },
         },
       })
     end,
