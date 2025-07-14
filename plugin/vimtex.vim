@@ -11,3 +11,10 @@ let g:vimtex_compiler_latexmk = {
     \   '-interaction=nonstopmode',
     \ ],
     \}
+call vimtex#imaps#add_map({
+    \ 'lhs' : 'B',
+    \ 'rhs' : 'vimtex#imaps#style_math("mathbb")',
+    \ 'expr' : 1,
+    \ 'leader' : '#',
+    \ 'wrapper' : 'vimtex#imaps#wrap_math'
+    \})
