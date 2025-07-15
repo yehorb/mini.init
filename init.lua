@@ -337,6 +337,14 @@ require("lazy").setup({
   },
   { "williamboman/mason-lspconfig.nvim", lazy = true },
   { "williamboman/mason.nvim", lazy = true },
+  -- As of now, Mason does not support configuration of the specific Python executable it will use.
+  -- Mason just checks for the `python` or `python3` executalbes in the $PATH.
+  -- I want to force Mason to use the Python I want - specifically one from the dedicated Mamba environment.
+  -- Mason injects the directory `install_root_dir` into the beginning of the $PATH (if `PATH = "prepend"`).
+  -- To force Mason to use the Python I want, I first create a shim using `scoop`:
+  -- `> scoop shim add python ~\miniforge3\envs\mason\python.exe`
+  -- And then move the shim to my `install_root_dir/bin` directory:
+  -- `> mv ~\scoop\shims\python.* ~\mason\bin\`
   {
     "neovim/nvim-lspconfig",
     config = function()
