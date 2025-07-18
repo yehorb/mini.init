@@ -519,6 +519,14 @@ require("lazy").setup({
   { "nvim-lua/plenary.nvim", lazy = true },
   {
     "obsidian-nvim/obsidian.nvim",
+    version = "*", -- recommended, use latest release instead of latest commit
+    lazy = true,
+    event = {
+      "BufReadPre " .. vim.fs.normalize "~/Documents/Obsidian Vault" .. "/*.md",
+      "BufNewFile " .. vim.fs.normalize "~/Documents/Obsidian Vault" .. "/*.md",
+    },
+    ---@module 'obsidian'
+    ---@type obsidian.config
     opts = {
       workspaces = {
         {
@@ -526,63 +534,10 @@ require("lazy").setup({
           path = vim.fs.normalize "~/Documents/Obsidian Vault",
         },
       },
-      notes_subdir = "00 - Inbox",
-      new_notes_location = "notes_subdir",
-      ---@param title string|?
-      ---@return string
-      note_id_func = function(title)
-        local suffix = ""
-        if title ~= nil then
-          suffix = title:gsub("[^A-Za-z0-9- ]", "")
-        else
-          for _ = 1, 4 do
-            suffix = suffix .. string.char(math.random(65, 90))
-          end
-        end
-        return tostring(os.date "%Y%m%d%H%M%S") .. " " .. suffix
-      end,
-      ---@param note obsidian.Note
-      note_frontmatter_func = function(note)
-        -- Add the title of the note as an alias.
-        if note.title then note:add_alias(note.title) end
-        -- Add the date of the note as an alias.
-        local id_date = string.match(note.id, "^[0-9]*")
-        if #id_date > 0 then note:add_alias(id_date) end
-
-        local out = { id = note.id, aliases = note.aliases, tags = note.tags }
-
-        -- `note.metadata` contains any manually added fields in the frontmatter.
-        -- So here we just make sure those fields are kept in the frontmatter.
-        if note.metadata ~= nil and not vim.tbl_isempty(note.metadata) then
-          for k, v in pairs(note.metadata) do
-            out[k] = v
-          end
-        end
-
-        return out
-      end,
-      wiki_link_func = "use_alias_only",
-      picker = false,
       ui = {
         enable = false,
-        checkboxes = {
-          [" "] = { char = "📫", hl_group = "ObsidianTodo" }, -- closed mailbox with raised flag
-          ["x"] = { char = "✅", hl_group = "ObsidianDone" }, -- check mark button
-          ["!"] = { char = "❗", hl_group = "ObsidianImportant" }, -- exclamation mark
-          ["?"] = { char = "❓", hl_group = "ObsidianImportant" }, -- question mark
-        },
-        external_link_icon = { char = "🕊", hl_group = "ObsidianExtLinkIcon" }, -- dove
       },
     },
-    event = {
-      "BufReadPre " .. vim.fs.normalize "~/Documents/Obsidian Vault" .. "/*.md",
-      "BufNewFile " .. vim.fs.normalize "~/Documents/Obsidian Vault" .. "/*.md",
-    },
-    keys = {
-      { "<Leader>on", "<Cmd>ObsidianNew<CR>" },
-      { "<Leader>og", ":grep -g !.git -g !.obsidian -g '!04 - Archive' " },
-    },
-    version = "*", -- recommended, use latest release instead of latest commit
   },
 
   {
