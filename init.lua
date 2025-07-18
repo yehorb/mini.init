@@ -650,14 +650,15 @@ local colorschemes = {
 local function roll_colorscheme()
   local idx = vim.fn.rand() % #colorschemes + 1
   vim.g.colorscheme = colorschemes[idx]
-  vim.notify("Selected colorsheme `" .. vim.g.colorscheme .. "` for the current session", vim.log.levels.INFO, {})
-  vim.cmd.colorscheme(vim.g.colorscheme)
 end
 
-vim.api.nvim_create_autocmd("User", {
-  pattern = "VeryLazy",
+vim.api.nvim_create_autocmd("VimEnter", {
   group = augroup,
-  callback = function() roll_colorscheme() end,
+  callback = function()
+    roll_colorscheme()
+    vim.notify("Selected colorscheme `" .. vim.g.colorscheme .. "` for the current session", vim.log.levels.INFO, {})
+    vim.cmd.colorscheme(vim.g.colorscheme)
+  end,
 })
 
 -- vim: ts=2 sts=2 sw=2 et
