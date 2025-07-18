@@ -661,4 +661,18 @@ vim.api.nvim_create_autocmd("VimEnter", {
   end,
 })
 
+vim.api.nvim_create_user_command("RollColorscheme", function(opts)
+  if #opts.fargs > 0 then
+    vim.g.colorscheme = opts.fargs[1]
+  else
+    roll_colorscheme()
+  end
+  vim.notify("Selected colorscheme `" .. vim.g.colorscheme .. "` for the current session", vim.log.levels.INFO, {})
+  vim.cmd.colorscheme(vim.g.colorscheme)
+end, {
+  nargs = "?",
+  complete = function(_, _, _) return vim.tbl_values(colorschemes) end,
+  desc = "Select a random colorscheme from a manually curated list, or pass a desired colorscheme name",
+})
+
 -- vim: ts=2 sts=2 sw=2 et
