@@ -248,6 +248,10 @@ require("lazy").setup({
     priority = 1000,
     opts = {},
   },
+  { "nordtheme/vim", lazy = false, priority = 1000 },
+  { "sainnhe/everforest", lazy = false, priority = 1000 },
+  { "sainnhe/gruvbox-material", lazy = false, priority = 1000 },
+  { "sainnhe/sonokai", lazy = false, priority = 1000 },
 
   -- [[ Step two - load other plugins ]]
   { "tpope/vim-fugitive", event = "VeryLazy" },
@@ -645,6 +649,10 @@ local colorschemes = {
   "rose-pine-main",
   "rose-pine-moon",
   "rose-pine-dawn",
+  "nord",
+  "everforest",
+  "gruvbox-material",
+  "sonokai",
 }
 
 local function roll_colorscheme()
