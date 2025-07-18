@@ -621,7 +621,9 @@ require("lazy").setup({
 local colorschemes = {
   "tokyonight-night",
   "tokyonight-storm",
+  "tokyonight-day",
   "tokyonight-moon",
+  "catppuccin-latte",
   "catppuccin-frappe",
   "catppuccin-macchiato",
   "catppuccin-mocha",
@@ -629,6 +631,8 @@ local colorschemes = {
   "kanagawa-dragon",
   "kanagawa-lotus",
   "nightfox",
+  "dayfox",
+  "dawnfox",
   "duskfox",
   "nordfox",
   "nordfox",
@@ -640,6 +644,7 @@ local colorschemes = {
   "aura-soft-dark-soft-text",
   "rose-pine-main",
   "rose-pine-moon",
+  "rose-pine-dawn",
 }
 
 local function roll_colorscheme()
