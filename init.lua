@@ -652,7 +652,12 @@ vim.api.nvim_create_user_command("RollColorscheme", function(opts)
   vim.cmd.colorscheme(vim.g.colorscheme)
 end, {
   nargs = "?",
-  complete = function(_, _, _) return vim.tbl_values(colorschemes) end,
+  complete = function(ArgLead, _, _)
+    return vim
+      .iter(ipairs(colorschemes))
+      :map(function(_, name) return name:sub(1, #ArgLead) == ArgLead and name or nil end)
+      :totable()
+  end,
   desc = "Select a random colorscheme from a manually curated list, or pass a desired colorscheme name",
 })
 
