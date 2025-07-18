@@ -442,10 +442,6 @@ require("lazy").setup({
       vim.lsp.enable "lua_ls"
       vim.lsp.enable "basedpyright"
       vim.lsp.enable "ruff"
-      vim.lsp.config("ltex", {
-        cmd = { "ltex-ls-plus" },
-      })
-      vim.lsp.enable "ltex"
       vim.lsp.config("verible", {
         cmd = { "verible-verilog-ls", "--rules_config_search", "--indentation_spaces=4" },
         root_markers = { "verible.filelist", ".git" },
