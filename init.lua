@@ -518,7 +518,7 @@ require("lazy").setup({
 
   { "nvim-lua/plenary.nvim", lazy = true },
   {
-    "epwalsh/obsidian.nvim",
+    "obsidian-nvim/obsidian.nvim",
     opts = {
       workspaces = {
         {
