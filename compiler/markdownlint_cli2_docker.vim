@@ -12,6 +12,7 @@ let s:makeprg = ''
     \ .. ' --workdir /src'
     \ .. ' davidanson/markdownlint-cli2:latest'
     \ .. ' %:S'
+" Other examples: https://github.com/search?q=%2Fmakeprg.*markdownlint%2F&type=code
 let s:errorformat = '%f:%l:%c %m'
 
 execute 'CompilerSet makeprg=' .. escape(s:makeprg, ' "\')
