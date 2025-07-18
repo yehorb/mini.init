@@ -675,4 +675,16 @@ end, {
   desc = "Select a random colorscheme from a manually curated list, or pass a desired colorscheme name",
 })
 
+vim.api.nvim_create_autocmd("VimLeavePre", {
+  pattern = "*",
+  group = augroup,
+  callback = function()
+    local stats_path = vim.fs.joinpath(vim.fn.stdpath "data", "colorscheme_stats.txt")
+    local stats_file = assert(io.open(stats_path, "a"))
+    stats_file:write((vim.g.colorscheme or "default") .. "\n")
+    stats_file:flush()
+    stats_file:close()
+  end,
+})
+
 -- vim: ts=2 sts=2 sw=2 et
