@@ -404,10 +404,6 @@ require("lazy").setup({
         local capabilities = vim.lsp.protocol.make_client_capabilities()
         capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
         client.capabilities = capabilities
-
-        -- Disable duplicate diagnostics from verible
-        -- https://github.com/neovim/neovim/issues/29927
-        -- if client.name == "verible" then client.server_capabilities.diagnosticProvider = nil end
       end
 
       vim.api.nvim_create_autocmd("LspAttach", {
@@ -513,9 +509,6 @@ require("lazy").setup({
     },
   },
 
-  { "shortcuts/no-neck-pain.nvim", version = "*", event = "VeryLazy" },
-  { "preservim/vim-pencil", enabled = false, ft = filetype.prose },
-
   { "nvim-lua/plenary.nvim", lazy = true },
   {
     "obsidian-nvim/obsidian.nvim",
@@ -549,10 +542,10 @@ require("lazy").setup({
     "hrsh7th/nvim-cmp",
     version = false, -- last release is way too old
     event = "InsertEnter",
+    -- These dependencies need to be installed AND loaded
     dependencies = {
       { "hrsh7th/cmp-nvim-lsp" },
       { "hrsh7th/cmp-omni" },
-      { "hrsh7th/cmp-buffer", enabled = false },
       { url = "https://codeberg.org/FelipeLema/cmp-async-path.git" },
       { "abeldekat/cmp-mini-snippets" },
     },
@@ -605,37 +598,6 @@ require("lazy").setup({
     end,
   },
   { "rafamadriz/friendly-snippets" },
-
-  { "stevearc/dressing.nvim", lazy = true },
-  { "MunifTanjim/nui.nvim", lazy = true },
-  { "ibhagwan/fzf-lua", lazy = true },
-  {
-    "zbirenbaum/copilot.lua",
-    lazy = true,
-    opts = {},
-  },
-  {
-    "yetone/avante.nvim",
-    lazy = true,
-    version = false,
-    opts = {
-      provider = "copilot",
-    },
-    build = vim.uv.os_uname().version:match "Windows"
-        and "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false"
-      or "make",
-  },
-
-  {
-    enabled = false,
-    "jmbuhr/otter.nvim",
-    opts = {
-      buffers = {
-        set_filetype = true,
-        write_to_disk = true,
-      },
-    },
-  },
 }, {
   -- colorscheme that will be used when installing plugins.
   install = { colorscheme = { "habamax" } },
