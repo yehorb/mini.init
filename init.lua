@@ -210,44 +210,17 @@ require("lazy").setup({
   -- add your plugins here
   -- [[ Step one - load plugins with UI necessary to make initial screen draw ]]
   -- Colorschemes
-  {
-    "folke/tokyonight.nvim",
-    lazy = false,
-    priority = 1000,
-    opts = {},
-  },
-  {
-    "catppuccin/nvim",
-    name = "catppuccin",
-    lazy = false,
-    priority = 1000,
-    opts = {},
-  },
-  {
-    "rebelot/kanagawa.nvim",
-    lazy = false,
-    priority = 1000,
-    opts = {},
-  },
-  {
-    "EdenEast/nightfox.nvim",
-    lazy = false,
-    priority = 1000,
-    opts = {},
-  },
+  { "folke/tokyonight.nvim", lazy = false, priority = 1000, opts = {} },
+  { "catppuccin/nvim", name = "catppuccin", lazy = false, priority = 1000, opts = {} },
+  { "rebelot/kanagawa.nvim", lazy = false, priority = 1000, opts = {} },
+  { "EdenEast/nightfox.nvim", lazy = false, priority = 1000, opts = {} },
   {
     "baliestri/aura-theme",
     lazy = false,
     priority = 1000,
     config = function(plugin) vim.opt.rtp:append(plugin.dir .. "/packages/neovim") end,
   },
-  {
-    "rose-pine/neovim",
-    name = "rose-pine",
-    lazy = false,
-    priority = 1000,
-    opts = {},
-  },
+  { "rose-pine/neovim", name = "rose-pine", lazy = false, priority = 1000, opts = {} },
   { "nordtheme/vim", lazy = false, priority = 1000 },
   { "sainnhe/everforest", lazy = false, priority = 1000 },
   { "sainnhe/gruvbox-material", lazy = false, priority = 1000 },
