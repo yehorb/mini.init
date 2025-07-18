@@ -503,6 +503,8 @@ require("lazy").setup({
         ["<C-h>"] = false,
         ["<C-l>"] = false,
         ["<C-p>"] = false,
+        ["l"] = "actions.select",
+        ["h"] = "actions.parent",
       },
     },
     event = "VeryLazy",
