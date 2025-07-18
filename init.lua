@@ -612,7 +612,6 @@ local colorschemes = {
   "dawnfox",
   "duskfox",
   "nordfox",
-  "nordfox",
   "terafox",
   "carbonfox",
   "aura-dark",
@@ -639,6 +638,7 @@ vim.api.nvim_create_autocmd("VimEnter", {
     roll_colorscheme()
     vim.notify("Selected colorscheme `" .. vim.g.colorscheme .. "` for the current session", vim.log.levels.INFO, {})
     vim.cmd.colorscheme(vim.g.colorscheme)
+    vim.cmd [[highlight! link Whitespace DiagnosticError]] -- Highlight nonprinting characters
   end,
 })
 
@@ -650,6 +650,7 @@ vim.api.nvim_create_user_command("RollColorscheme", function(opts)
   end
   vim.notify("Selected colorscheme `" .. vim.g.colorscheme .. "` for the current session", vim.log.levels.INFO, {})
   vim.cmd.colorscheme(vim.g.colorscheme)
+  vim.cmd [[highlight! link Whitespace DiagnosticError]] -- Highlight nonprinting characters
 end, {
   nargs = "?",
   complete = function(ArgLead, _, _)
