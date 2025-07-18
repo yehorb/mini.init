@@ -209,31 +209,46 @@ vim.g.maplocalleader = " "
 require("lazy").setup({
   -- add your plugins here
   -- [[ Step one - load plugins with UI necessary to make initial screen draw ]]
+  -- Colorschemes
   {
-    "shaunsingh/nord.nvim",
-    lazy = false, -- make sure we load this during startup if it is your main colorscheme
-    priority = 1000, -- make sure to load this before all the other start plugins
-    config = function()
-      -- load the colorscheme here
-      vim.g.nord_contrast = true
-      vim.g.nord_uniform_diff_background = true
-      vim.g.nord_italic = true
-      vim.g.nord_bold = true
-
-      require("nord").set()
-      vim.cmd [[highlight! link Whitespace DiagnosticError]] -- Highlight nonprinting characters
-    end,
-  },
-  {
-    "AlexvZyl/nordic.nvim",
-    enabled = false,
+    "folke/tokyonight.nvim",
     lazy = false,
     priority = 1000,
-    config = function()
-      require("nordic").load()
-      vim.cmd [[highlight! link Whitespace DiagnosticError]] -- Highlight nonprinting characters
-    end,
+    opts = {},
   },
+  {
+    "catppuccin/nvim",
+    name = "catppuccin",
+    lazy = false,
+    priority = 1000,
+    opts = {},
+  },
+  {
+    "rebelot/kanagawa.nvim",
+    lazy = false,
+    priority = 1000,
+    opts = {},
+  },
+  {
+    "EdenEast/nightfox.nvim",
+    lazy = false,
+    priority = 1000,
+    opts = {},
+  },
+  {
+    "baliestri/aura-theme",
+    lazy = false,
+    priority = 1000,
+    config = function(plugin) vim.opt.rtp:append(plugin.dir .. "/packages/neovim") end,
+  },
+  {
+    "rose-pine/neovim",
+    name = "rose-pine",
+    lazy = false,
+    priority = 1000,
+    opts = {},
+  },
+
   -- [[ Step two - load other plugins ]]
   { "tpope/vim-fugitive", event = "VeryLazy" },
   { "tpope/vim-unimpaired", event = "VeryLazy" },
@@ -601,6 +616,43 @@ require("lazy").setup({
 }, {
   -- colorscheme that will be used when installing plugins.
   install = { colorscheme = { "habamax" } },
+})
+
+local colorschemes = {
+  "tokyonight-night",
+  "tokyonight-storm",
+  "tokyonight-moon",
+  "catppuccin-frappe",
+  "catppuccin-macchiato",
+  "catppuccin-mocha",
+  "kanagawa-wave",
+  "kanagawa-dragon",
+  "kanagawa-lotus",
+  "nightfox",
+  "duskfox",
+  "nordfox",
+  "nordfox",
+  "terafox",
+  "carbonfox",
+  "aura-dark",
+  "aura-dark-soft-text",
+  "aura-soft-dark",
+  "aura-soft-dark-soft-text",
+  "rose-pine-main",
+  "rose-pine-moon",
+}
+
+local function roll_colorscheme()
+  local idx = vim.fn.rand() % #colorschemes + 1
+  vim.g.colorscheme = colorschemes[idx]
+  vim.notify("Selected colorsheme `" .. vim.g.colorscheme .. "` for the current session", vim.log.levels.INFO, {})
+  vim.cmd.colorscheme(vim.g.colorscheme)
+end
+
+vim.api.nvim_create_autocmd("User", {
+  pattern = "VeryLazy",
+  group = augroup,
+  callback = function() roll_colorscheme() end,
 })
 
 -- vim: ts=2 sts=2 sw=2 et
