@@ -1,0 +1,191 @@
+{
+  "Insert Note": {
+    "prefix": [
+      "note"
+    ],
+    "body": "> [!note]\n> ",
+    "description": "Insert Note"
+  },
+  "Insert Abstract": {
+    "prefix": [
+      "abstract"
+    ],
+    "body": "> [!abstract]\n> ",
+    "description": "Insert Abstract"
+  },
+  "Insert Summary": {
+    "prefix": [
+      "summary"
+    ],
+    "body": "> [!summary]\n> ",
+    "description": "Insert Summary"
+  },
+  "Insert Tldr": {
+    "prefix": [
+      "tldr"
+    ],
+    "body": "> [!tldr]\n> ",
+    "description": "Insert Tldr"
+  },
+  "Insert Info": {
+    "prefix": [
+      "info"
+    ],
+    "body": "> [!info]\n> ",
+    "description": "Insert Info"
+  },
+  "Insert Todo": {
+    "prefix": [
+      "todo"
+    ],
+    "body": "> [!todo]\n> ",
+    "description": "Insert Todo"
+  },
+  "Insert Tip": {
+    "prefix": [
+      "tip"
+    ],
+    "body": "> [!tip]\n> ",
+    "description": "Insert Tip"
+  },
+  "Insert Hint": {
+    "prefix": [
+      "hint"
+    ],
+    "body": "> [!hint]\n> ",
+    "description": "Insert Hint"
+  },
+  "Insert Important": {
+    "prefix": [
+      "important"
+    ],
+    "body": "> [!important]\n> ",
+    "description": "Insert Important"
+  },
+  "Insert Success": {
+    "prefix": [
+      "success"
+    ],
+    "body": "> [!success]\n> ",
+    "description": "Insert Success"
+  },
+  "Insert Check": {
+    "prefix": [
+      "check"
+    ],
+    "body": "> [!check]\n> ",
+    "description": "Insert Check"
+  },
+  "Insert Done": {
+    "prefix": [
+      "done"
+    ],
+    "body": "> [!done]\n> ",
+    "description": "Insert Done"
+  },
+  "Insert Question": {
+    "prefix": [
+      "question"
+    ],
+    "body": "> [!question]\n> ",
+    "description": "Insert Question"
+  },
+  "Insert Help": {
+    "prefix": [
+      "help"
+    ],
+    "body": "> [!help]\n> ",
+    "description": "Insert Help"
+  },
+  "Insert Faq": {
+    "prefix": [
+      "faq"
+    ],
+    "body": "> [!faq]\n> ",
+    "description": "Insert Faq"
+  },
+  "Insert Warning": {
+    "prefix": [
+      "warning"
+    ],
+    "body": "> [!warning]\n> ",
+    "description": "Insert Warning"
+  },
+  "Insert Caution": {
+    "prefix": [
+      "caution"
+    ],
+    "body": "> [!caution]\n> ",
+    "description": "Insert Caution"
+  },
+  "Insert Attention": {
+    "prefix": [
+      "attention"
+    ],
+    "body": "> [!attention]\n> ",
+    "description": "Insert Attention"
+  },
+  "Insert Failure": {
+    "prefix": [
+      "failure"
+    ],
+    "body": "> [!failure]\n> ",
+    "description": "Insert Failure"
+  },
+  "Insert Fail": {
+    "prefix": [
+      "fail"
+    ],
+    "body": "> [!fail]\n> ",
+    "description": "Insert Fail"
+  },
+  "Insert Missing": {
+    "prefix": [
+      "missing"
+    ],
+    "body": "> [!missing]\n> ",
+    "description": "Insert Missing"
+  },
+  "Insert Danger": {
+    "prefix": [
+      "danger"
+    ],
+    "body": "> [!danger]\n> ",
+    "description": "Insert Danger"
+  },
+  "Insert Error": {
+    "prefix": [
+      "error"
+    ],
+    "body": "> [!error]\n> ",
+    "description": "Insert Error"
+  },
+  "Insert Bug": {
+    "prefix": [
+      "bug"
+    ],
+    "body": "> [!bug]\n> ",
+    "description": "Insert Bug"
+  },
+  "Insert Example": {
+    "prefix": [
+      "example"
+    ],
+    "body": "> [!example]\n> ",
+    "description": "Insert Example"
+  },
+  "Insert Quote": {
+    "prefix": [
+      "quote"
+    ],
+    "body": "> [!quote]\n> ",
+    "description": "Insert Quote"
+  },
+  "Insert Cite": {
+    "prefix": [
+      "cite"
+    ],
+    "body": "> [!cite]\n> ",
+    "description": "Insert Cite"
+  }
+}
