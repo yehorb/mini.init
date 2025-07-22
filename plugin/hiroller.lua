@@ -42,25 +42,27 @@ local function roll_colorscheme()
   vim.g.colorscheme = colorschemes[idx]
 end
 
+local function set_colorscheme()
+  vim.notify("Selected colorscheme `" .. vim.g.colorscheme .. "` for the current session", vim.log.levels.INFO, {})
+  vim.cmd.colorscheme(vim.g.colorscheme or "default")
+  vim.cmd [[highlight! link Whitespace DiagnosticError]] -- Highlight nonprinting characters
+end
+
 vim.api.nvim_create_autocmd("VimEnter", {
   group = augroup,
   callback = function()
     roll_colorscheme()
-    vim.notify("Selected colorscheme `" .. vim.g.colorscheme .. "` for the current session", vim.log.levels.INFO, {})
-    vim.cmd.colorscheme(vim.g.colorscheme)
-    vim.cmd [[highlight! link Whitespace DiagnosticError]] -- Highlight nonprinting characters
+    set_colorscheme()
   end,
 })
 
-vim.api.nvim_create_user_command("RollColorscheme", function(opts)
+vim.api.nvim_create_user_command("Hiroll", function(opts)
   if #opts.fargs > 0 then
     vim.g.colorscheme = opts.fargs[1]
   else
     roll_colorscheme()
   end
-  vim.notify("Selected colorscheme `" .. vim.g.colorscheme .. "` for the current session", vim.log.levels.INFO, {})
-  vim.cmd.colorscheme(vim.g.colorscheme)
-  vim.cmd [[highlight! link Whitespace DiagnosticError]] -- Highlight nonprinting characters
+  set_colorscheme()
 end, {
   nargs = "?",
   complete = function(ArgLead, _, _)
@@ -72,14 +74,21 @@ end, {
   desc = "Select a random colorscheme from a manually curated list, or pass a desired colorscheme name",
 })
 
+--- @param path string
+local function append_colorscheme_to(path)
+  local stats_path = vim.fs.joinpath(vim.fn.stdpath "data", path)
+  local stats_file = assert(io.open(stats_path, "a"))
+  stats_file:write((vim.g.colorscheme or "default") .. "\n")
+  stats_file:flush()
+  stats_file:close()
+end
+
+vim.api.nvim_create_user_command("Hivote", function() append_colorscheme_to "colorscheme_votes.txt" end, {
+  desc = "Save the name of a currently selected colorscheme to the vote list",
+})
+
 vim.api.nvim_create_autocmd("VimLeavePre", {
   pattern = "*",
   group = augroup,
-  callback = function()
-    local stats_path = vim.fs.joinpath(vim.fn.stdpath "data", "colorscheme_stats.txt")
-    local stats_file = assert(io.open(stats_path, "a"))
-    stats_file:write((vim.g.colorscheme or "default") .. "\n")
-    stats_file:flush()
-    stats_file:close()
-  end,
+  callback = function() append_colorscheme_to "colorscheme_stats.txt" end,
 })
