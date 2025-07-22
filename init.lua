@@ -593,6 +593,12 @@ require("lazy").setup({
 }, {
   -- colorscheme that will be used when installing plugins.
   install = { colorscheme = { "habamax" } },
+  performance = vim.g.nvf and {
+    reset_packpath = false,
+    rtp = {
+      reset = false,
+    },
+  } or {},
 })
 
 -- vim: ts=2 sts=2 sw=2 et
