@@ -15,11 +15,19 @@ function M.ensure()
   return M._relmap
 end
 
+---@param char string
+---@return string
+function M.re(char) return M.ensure()[char] or char end
+
 ---@param input string
 ---@return string
 function M.relmap(input)
-  local output, _ = string.gsub(input, ".", function(s) return M.ensure()[s] or s end)
-  return output
+  return vim.iter(vim.fn.range(vim.fn.strchars(input))):fold("", function(acc, charnr)
+    local char = vim.fn.nr2char(vim.fn.strgetchar(input, charnr))
+    return acc .. (M.ensure()[char] or char)
+  end)
 end
+
+_G["relmap"] = M
 
 return M
