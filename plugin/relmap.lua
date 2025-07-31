@@ -20,8 +20,13 @@ end
 ---@param input string
 ---@return string
 function M.relmap(input)
+  -- I am using the `vim.fn.substitute` specifically, as it handles UTF-8 characters
+  -- transparently. There is no need to dissect the string byte by byte, as with any
+  -- available native to Lua function.
+  -- For example, in the `string.gsub(input, ".", function(s) return s end)`, the `s`
+  -- will be a single byte in case of non-English characters.
   -- While not really explicitly stated anywhere, and no usage examples are provided,
-  -- a lua function works fine as a `Funcref` parameter.
+  -- a Lua function works fine as a `Funcref` parameter.
   ---@param m string[]|nil
   ---@return string|nil
   ---@diagnostic disable-next-line: param-type-mismatch
