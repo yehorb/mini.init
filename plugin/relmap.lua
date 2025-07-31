@@ -31,18 +31,24 @@ function M.relmap(input)
   end, "g")
 end
 
----@param type string|nil
+---@param type "line"|"char"|"block"|nil
 ---@return "g@"|nil
 function M.operator(type)
   if type == nil then
     vim.o.operatorfunc = "v:lua.Relmap.operator"
     return "g@"
   end
-  local start_row, start_col = unpack(vim.api.nvim_buf_get_mark(0, "["))
-  local end_row, end_col = unpack(vim.api.nvim_buf_get_mark(0, "]"))
-  local text = vim.api.nvim_buf_get_text(0, start_row - 1, start_col, end_row - 1, end_col + 1, {})
+  local start_pos = vim.api.nvim_buf_get_mark(0, "[")
+  local end_pos = vim.api.nvim_buf_get_mark(0, "]")
+  local p = {
+    start_row = start_pos[1] - 1, -- get_mark is (1, 0) based, {get,set}_text is (0, 0) based
+    start_col = type == "line" and 0 or start_pos[2],
+    end_row = end_pos[1] - 1,
+    end_col = type == "line" and -1 or end_pos[2] + 1, -- make selection inclusive
+  }
+  local text = vim.api.nvim_buf_get_text(0, p.start_row, p.start_col, p.end_row, p.end_col, {})
   local retext = vim.iter(text):map(M.relmap):totable()
-  vim.api.nvim_buf_set_text(0, start_row - 1, start_col, end_row - 1, end_col + 1, retext)
+  vim.api.nvim_buf_set_text(0, p.start_row, p.start_col, p.end_row, p.end_col, retext)
 end
 
 vim.keymap.set(
