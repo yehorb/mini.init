@@ -1,6 +1,7 @@
 -- Reverse language mapping
 
 local M = {}
+_G["Relmap"] = M
 
 ---@return table<string, string>
 function M.ensure()
@@ -30,6 +31,31 @@ function M.relmap(input)
   end, "g")
 end
 
-_G["Relmap"] = M
+---@param type string|nil
+---@return "g@"|nil
+function M.operator(type)
+  if type == nil then
+    vim.o.operatorfunc = "v:lua.Relmap.operator"
+    return "g@"
+  end
+  local start_row, start_col = unpack(vim.api.nvim_buf_get_mark(0, "["))
+  local end_row, end_col = unpack(vim.api.nvim_buf_get_mark(0, "]"))
+  local text = vim.api.nvim_buf_get_text(0, start_row - 1, start_col, end_row - 1, end_col + 1, {})
+  local retext = vim.iter(text):map(M.relmap):totable()
+  vim.api.nvim_buf_set_text(0, start_row - 1, start_col, end_row - 1, end_col + 1, retext)
+end
+
+vim.keymap.set(
+  { "n", "x" },
+  "<leader>rl",
+  function() return M.operator() end,
+  { expr = true, desc = "Reverse language mapping" }
+)
+vim.keymap.set(
+  "n",
+  "<leader>rll",
+  function() return M.operator() .. "_" end,
+  { expr = true, desc = "Reverse language mapping" }
+)
 
 return M
