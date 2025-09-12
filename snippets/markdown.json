@@ -187,5 +187,10 @@
     ],
     "body": "> [!cite]\n> ",
     "description": "Insert Cite"
+  },
+  "Date": {
+      "prefix": ["date", "hdate"],
+      "body": "$CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE, $CURRENT_DAY_NAME, $CURRENT_MONTH_NAME $CURRENT_DATE, $CURRENT_YEAR",
+      "description": "Insert Date (Header Format)"
   }
 }
