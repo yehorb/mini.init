@@ -8,10 +8,10 @@ set cpo&vim
 
 let s:makeprg = ''
     \ .. 'docker run --rm'
-    \ .. ' -v ' .. shellescape(fnamemodify(getcwd(), ':p') .. ':/src:rw,Z')
+    \ .. ' --mount ''type=bind,src=%:p,dst=/src/%:t,ro'''
     \ .. ' --workdir /src'
     \ .. ' davidanson/markdownlint-cli2:latest'
-    \ .. ' %:S'
+    \ .. ' ''%:t'''
 " Other examples: https://github.com/search?q=%2Fmakeprg.*markdownlint%2F&type=code
 let s:errorformat = '%f:%l:%c %m'
 
