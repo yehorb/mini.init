@@ -44,7 +44,10 @@ end
 
 local function set_colorscheme()
   vim.notify("Selected colorscheme `" .. vim.g.colorscheme .. "` for the current session", vim.log.levels.INFO, {})
-  vim.cmd.colorscheme(vim.g.colorscheme or "default")
+  vim.api.nvim_cmd(
+    { cmd = "colorscheme", args = { vim.g.colorscheme or "default" }, mods = { emsg_silent = true } },
+    {}
+  )
   vim.cmd [[highlight! link Whitespace DiagnosticError]] -- Highlight nonprinting characters
 end
 
