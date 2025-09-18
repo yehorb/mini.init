@@ -1,7 +1,7 @@
-if exists("current_compiler")
+if exists('current_compiler')
     finish
 endif
-let current_compiler = "markdownlint_cli2_docker"
+let current_compiler = 'markdownlint_cli2_docker'
 
 let s:cpo_save = &cpo
 set cpo&vim
