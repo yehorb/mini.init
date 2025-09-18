@@ -6,12 +6,14 @@ let current_compiler = 'markdownlint_cli2_docker'
 let s:cpo_save = &cpo
 set cpo&vim
 
+" Use single quotes to wrap long strings, as double quotes require escaping in
+" PowerShell
 let s:makeprg = ''
     \ .. 'docker run --rm'
-    \ .. ' --mount ''type=bind,src=%:p,dst=/src/%:t,ro'''
+    \ .. " --mount 'type=bind,src=%:p,dst=/src/%:t,ro'"
     \ .. ' --workdir /src'
     \ .. ' davidanson/markdownlint-cli2:latest'
-    \ .. ' ''%:t'''
+    \ .. " '%:t'"
 " Other examples: https://github.com/search?q=%2Fmakeprg.*markdownlint%2F&type=code
 let s:errorformat = '%f:%l:%c %m,%f:%l %m'
 
