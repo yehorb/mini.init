@@ -10,10 +10,10 @@ set cpo&vim
 " PowerShell
 let s:makeprg = ''
     \ .. 'docker run --rm'
-    \ .. " --mount 'type=bind,src=%:p,dst=/src/%:t,ro'"
+    \ .. " --mount 'type=bind,src=" .. getcwd() .. ",dst=/src,ro'"
     \ .. ' --workdir /src'
     \ .. ' davidanson/markdownlint-cli2:latest'
-    \ .. " '%:t'"
+    \ .. " '%:.'"
 " Other examples: https://github.com/search?q=%2Fmakeprg.*markdownlint%2F&type=code
 let s:errorformat = '%f:%l:%c %m,%f:%l %m'
 
