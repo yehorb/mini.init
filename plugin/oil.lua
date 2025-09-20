@@ -44,5 +44,7 @@ M.clear = function() vim.api.nvim_buf_clear_namespace(0, M.ns_id, 0, -1) end
 local cd = oil.get_current_dir(0)
 if vim.fn.finddir(".zk", vim.fn.escape(cd, " ") .. ";") ~= "" then M.set_virtulal_h1() end
 
+_G.Oil = M
+
 return M
 -- vim: ts=2 sts=2 sw=2 et
