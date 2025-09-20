@@ -518,6 +518,7 @@ require("lazy").setup({
           path = vim.fs.normalize "~/Documents/Obsidian Vault",
         },
       },
+      disable_frontmatter = true,
       ui = {
         enable = false,
       },
