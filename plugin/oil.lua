@@ -6,6 +6,8 @@ local line_count = vim.api.nvim_buf_line_count(0)
 for lnum = 2, line_count do
   ---@type nil|oil.Entry
   local entry = oil.get_entry_on_line(0, lnum)
-  vim.print(entry)
+  if entry ~= nil then
+    if entry.type == "file" then vim.print(entry) end
+  end
 end
 -- vim: ts=2 sts=2 sw=2 et
