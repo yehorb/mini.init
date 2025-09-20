@@ -28,7 +28,7 @@ for lnum = 2, line_count do
         local opts = {
           virt_text = { { h1, "NonText" } },
         }
-        vim.api.nvim_buf_set_extmark(0, ns_id, lnum, 0, opts)
+        vim.api.nvim_buf_set_extmark(0, ns_id, lnum - 1, 0, opts)
       end
     end
   end
