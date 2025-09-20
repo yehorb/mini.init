@@ -41,8 +41,15 @@ end
 
 M.clear = function() vim.api.nvim_buf_clear_namespace(0, M.ns_id, 0, -1) end
 
-local cd = oil.get_current_dir(0)
-if vim.fn.finddir(".zk", vim.fn.escape(cd, " ") .. ";") ~= "" then M.set_virtulal_h1() end
+M.augroup = vim.api.nvim_create_augroup("zk-virtual-h1", { clear = true })
+vim.api.nvim_create_autocmd("User", {
+  group = M.augroup,
+  pattern = "OilEnter",
+  callback = function()
+    local cd = oil.get_current_dir(0)
+    if vim.fn.finddir(".zk", vim.fn.escape(cd, " ") .. ";") ~= "" then M.set_virtulal_h1() end
+  end,
+})
 
 _G.Oil = M
 
