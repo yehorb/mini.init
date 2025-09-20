@@ -40,7 +40,7 @@ M.set_virtulal_h1 = function()
 end
 
 local cd = oil.get_current_dir(0)
-if vim.fn.finddir(".zk", cd .. ";") ~= "" then M.set_virtulal_h1() end
+if vim.fn.finddir(".zk", vim.fn.escape(cd, " ") .. ";") ~= "" then M.set_virtulal_h1() end
 
 return M
 -- vim: ts=2 sts=2 sw=2 et
