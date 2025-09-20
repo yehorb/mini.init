@@ -5,7 +5,7 @@ local M = {}
 
 ---@param filename string
 ---@return nil|string
-local function get_h1(filename)
+M.get_h1 = function(filename)
   ---@type nil|string
   local h1 = vim
     .iter(io.lines(filename))
@@ -15,7 +15,8 @@ local function get_h1(filename)
   return h1
 end
 
-local ns_id = vim.api.nvim_create_namespace "zk-virtual-h1"
+M.ns_id = vim.api.nvim_create_namespace "zk-virtual-h1"
+
 local cd = oil.get_current_dir(0)
 local line_count = vim.api.nvim_buf_line_count(0)
 -- Line 1 is the `..` entry
@@ -25,12 +26,12 @@ for lnum = 2, line_count do
   if entry ~= nil then
     if entry.type == "file" then
       local filename = vim.fs.joinpath(cd, entry.name)
-      local h1 = get_h1(filename)
+      local h1 = M.get_h1(filename)
       if h1 ~= nil then
         local opts = {
           virt_text = { { h1, "NonText" } },
         }
-        vim.api.nvim_buf_set_extmark(0, ns_id, lnum - 1, 0, opts)
+        vim.api.nvim_buf_set_extmark(0, M.ns_id, lnum - 1, 0, opts)
       end
     end
   end
