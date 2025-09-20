@@ -3,7 +3,15 @@ if not ok then vim.notify("oil.nvim is not available", vim.log.levels.WARN, {}) 
 
 ---@param filename string
 ---@return nil|string
-local function get_h1(filename) return nil end
+local function get_h1(filename)
+  ---@type nil|string
+  local h1 = vim
+    .iter(io.lines(filename))
+    :take(50) -- Only check the first 50 lines
+    :find(function(line) return vim.startswith(line, "# ") end)
+  if h1 ~= nil then h1 = h1:sub(3) end -- Remove the `# ` prefix
+  return h1
+end
 
 local cd = oil.get_current_dir(0)
 local line_count = vim.api.nvim_buf_line_count(0)
