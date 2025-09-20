@@ -579,11 +579,9 @@ require("lazy").setup({
         sources = {
           {
             name = "omni",
-            option = {
-              disable_omnifuncs = { "v:lua.vim.lsp.omnifunc" },
-            },
             group_index = 0,
           },
+          { name = "nvim_lsp" },
           { name = "mini_snippets" },
           { name = "async_path" },
         },
