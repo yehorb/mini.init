@@ -521,6 +521,7 @@ require("lazy").setup({
       ui = {
         enable = false,
       },
+      legacy_commands = false,
     },
   },
 
