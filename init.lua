@@ -501,7 +501,6 @@ require("lazy").setup({
     },
   },
 
-  { "nvim-lua/plenary.nvim", lazy = true },
   {
     "obsidian-nvim/obsidian.nvim",
     version = "*", -- recommended, use latest release instead of latest commit
