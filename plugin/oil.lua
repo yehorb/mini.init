@@ -1,6 +1,8 @@
 local ok, oil = pcall(require, "oil")
 if not ok then vim.notify("oil.nvim is not available", vim.log.levels.WARN, {}) end
 
+local M = {}
+
 ---@param filename string
 ---@return nil|string
 local function get_h1(filename)
@@ -33,4 +35,6 @@ for lnum = 2, line_count do
     end
   end
 end
+
+return M
 -- vim: ts=2 sts=2 sw=2 et
