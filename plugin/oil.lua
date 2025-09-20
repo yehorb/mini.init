@@ -25,7 +25,7 @@ M.set_virtulal_h1 = function()
     ---@type nil|oil.Entry
     local entry = oil.get_entry_on_line(0, lnum)
     if entry ~= nil then
-      if entry.type == "file" then
+      if entry.type == "file" and vim.endswith(entry.name, ".md") then
         local filename = vim.fs.joinpath(cd, entry.name)
         local h1 = M.get_h1(filename)
         if h1 ~= nil then
