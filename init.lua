@@ -591,6 +591,7 @@ require("lazy").setup({
     end,
   },
   { "rafamadriz/friendly-snippets" },
+  { "zk-org/zk-nvim", main = "zk", opts = {} },
 }, {
   -- colorscheme that will be used when installing plugins.
   install = { colorscheme = { "habamax" } },
