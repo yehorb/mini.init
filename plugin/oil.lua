@@ -46,7 +46,7 @@ vim.api.nvim_create_autocmd("User", {
   group = M.augroup,
   pattern = "OilEnter",
   callback = function()
-    local cd = oil.get_current_dir(0)
+    local cd = oil.get_current_dir(0):sub(0, -2) -- Remove the trailing slash
     if vim.fn.finddir(".zk", vim.fn.escape(cd, " ") .. ";") ~= "" then M.set_virtulal_h1() end
   end,
 })
