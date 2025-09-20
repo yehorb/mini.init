@@ -13,6 +13,7 @@ local function get_h1(filename)
   return h1
 end
 
+local ns_id = vim.api.nvim_create_namespace "zk-virtual-h1"
 local cd = oil.get_current_dir(0)
 local line_count = vim.api.nvim_buf_line_count(0)
 -- Line 1 is the `..` entry
@@ -23,7 +24,12 @@ for lnum = 2, line_count do
     if entry.type == "file" then
       local filename = vim.fs.joinpath(cd, entry.name)
       local h1 = get_h1(filename)
-      vim.print(h1)
+      if h1 ~= nil then
+        local opts = {
+          virt_text = { { h1, "NonText" } },
+        }
+        vim.api.nvim_buf_set_extmark(0, ns_id, lnum, 0, opts)
+      end
     end
   end
 end
