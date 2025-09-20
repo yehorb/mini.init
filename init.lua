@@ -238,7 +238,11 @@ require("lazy").setup({
 
       vim.api.nvim_create_autocmd("User", {
         pattern = "VeryLazy",
-        callback = function() require("mini.diff").setup() end,
+        callback = function()
+          require("mini.diff").setup()
+          require("mini.pick").setup()
+          vim.ui.select = MiniPick.ui_select
+        end,
       })
 
       vim.api.nvim_create_autocmd("InsertEnter", {
