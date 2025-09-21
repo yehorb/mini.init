@@ -39,6 +39,35 @@ M.set_virtulal_h1 = function()
   end
 end
 
+M.iter_virtual_h1 = function()
+  local line_count = vim.api.nvim_buf_line_count(0)
+  local cd = oil.get_current_dir(0)
+  vim
+    -- Line 1 is the `..` entry
+    .iter(coroutine.wrap(M.range(2, line_count)))
+    :map(function(lnum) return lnum, oil.get_entry_on_line(0, lnum) end)
+    :filter(function(_, entry) return entry end)
+    :filter(function(_, entry) return entry.type == "file" end)
+    :filter(function(_, entry) return vim.endswith(entry.name, ".md") end)
+    :map(function(lnum, entry) return lnum, vim.fs.joinpath(cd, entry.name) end)
+    :map(function(lnum, filename) return lnum, M.get_h1(filename) end)
+    :filter(function(_, h1) return h1 end)
+    :each(function(lnum, h1)
+      local opts = {
+        virt_text = { { h1, "NonText" } },
+      }
+      vim.api.nvim_buf_set_extmark(0, M.ns_id, lnum - 1, 0, opts)
+    end)
+end
+
+M.range = function(start, stop)
+  return function()
+    for i = start, stop do
+      coroutine.yield(i)
+    end
+  end
+end
+
 M.clear = function() vim.api.nvim_buf_clear_namespace(0, M.ns_id, 0, -1) end
 
 M.augroup = vim.api.nvim_create_augroup("zk-virtual-h1", { clear = true })
