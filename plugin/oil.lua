@@ -24,16 +24,14 @@ M.set_virtulal_h1 = function()
   for lnum = 2, line_count do
     ---@type nil|oil.Entry
     local entry = oil.get_entry_on_line(0, lnum)
-    if entry ~= nil then
-      if entry.type == "file" and vim.endswith(entry.name, ".md") then
-        local filename = vim.fs.joinpath(cd, entry.name)
-        local h1 = M.get_h1(filename)
-        if h1 ~= nil then
-          local opts = {
-            virt_text = { { h1, "NonText" } },
-          }
-          vim.api.nvim_buf_set_extmark(0, M.ns_id, lnum - 1, 0, opts)
-        end
+    if entry ~= nil and entry.type == "file" and vim.endswith(entry.name, ".md") then
+      local filename = vim.fs.joinpath(cd, entry.name)
+      local h1 = M.get_h1(filename)
+      if h1 ~= nil then
+        local opts = {
+          virt_text = { { h1, "NonText" } },
+        }
+        vim.api.nvim_buf_set_extmark(0, M.ns_id, lnum - 1, 0, opts)
       end
     end
   end
