@@ -47,15 +47,15 @@ end
 -- Switch to Ukrainian using *i_CTRL-^*
 vim.o.keymap = "ukrainian-jcuken"
 vim.o.iminsert = 0
-vim.o.imsearch = 0
+vim.o.imsearch = -1
 for _, lower in ipairs { "a", "c", "i", "o", "r" } do
   local upper = lower:upper()
   for _, key in ipairs { lower, upper } do
     vim.keymap.set(
       "n",
       "U" .. key,
-      "<Cmd>set iminsert=1 imsearch=1<CR>" .. key,
-      { desc = "Turn on :lmap and IM and enter Insert mode" }
+      "<Cmd>set iminsert=1<CR>" .. key,
+      { desc = "Toggle the use of typing language characters and enter Insert mode" }
     )
   end
 end
@@ -65,8 +65,8 @@ end
 vim.keymap.set(
   "i",
   "<Esc>",
-  "<Esc><Cmd>set iminsert=0 imsearch=0<CR>",
-  { desc = "Turn off :lmap and IM when leaving Insert mode" }
+  "<Esc><Cmd>set iminsert=0<CR>",
+  { desc = "Reset the 'iminsert' option to zero when leaving Insert mode" }
 )
 
 vim.o.scrolloff = 8
