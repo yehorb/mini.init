@@ -97,6 +97,8 @@ vim.g.clipboard = vim.fn.has "wsl" == 1
     }
   or nil
 
+if vim.fn.executable "rg" == 1 then vim.o.grepprg = "rg --vimgrep" end
+
 -- [[ Basic Keymaps ]]
 -- Keybinds to make split navigation easier.
 vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
