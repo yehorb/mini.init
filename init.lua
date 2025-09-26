@@ -240,7 +240,17 @@ require("lazy").setup({
         pattern = "VeryLazy",
         callback = function()
           require("mini.diff").setup()
-          require("mini.pick").setup()
+          require("mini.pick").setup {
+            mappings = {
+              iminsert = {
+                char = "<C-^>",
+                func = function()
+                  vim.cmd "let &l:iminsert = xor(&l:iminsert, 1)"
+                  vim.notify("'iminsert' is now " .. vim.o.iminsert)
+                end,
+              },
+            },
+          }
           vim.ui.select = MiniPick.ui_select
         end,
       })
