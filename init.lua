@@ -535,8 +535,16 @@ require("lazy").setup({
         },
       },
       disable_frontmatter = true,
+      picker = {
+        name = "snacks.pick",
+        note_mappings = { insert_link = "" },
+        tag_mappings = { insert_tag = "" },
+      },
       ui = {
         enable = false,
+      },
+      footer = {
+        enabled = false,
       },
       legacy_commands = false,
     },
@@ -606,6 +614,36 @@ require("lazy").setup({
   },
   { "rafamadriz/friendly-snippets" },
   { "zk-org/zk-nvim", main = "zk", opts = {} },
+
+  {
+    "folke/snacks.nvim",
+    priority = 1000,
+    lazy = false,
+    ---@type snacks.Config
+    opts = {
+      picker = {
+        enabled = true,
+        prompt = "> ",
+        layout = { preset = "select" },
+        win = {
+          input = {
+            keys = {
+              ["<C-l>"] = { "list_scroll_left", mode = { "i", "n" } },
+              ["<C-h>"] = { "list_scroll_right", mode = { "i", "n" } },
+            },
+          },
+        },
+        actions = {
+          list_scroll_left = function(picker)
+            vim.api.nvim_win_call(picker.list.win.win, function() vim.cmd "normal! zL" end)
+          end,
+          list_scroll_right = function(picker)
+            vim.api.nvim_win_call(picker.list.win.win, function() vim.cmd "normal! zH" end)
+          end,
+        },
+      },
+    },
+  },
 }, {
   -- colorscheme that will be used when installing plugins.
   install = { colorscheme = { "habamax" } },
