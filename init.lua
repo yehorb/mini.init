@@ -524,8 +524,9 @@ require("lazy").setup({
       disable_frontmatter = true,
       picker = {
         name = "snacks.pick",
-        note_mappings = { insert_link = "" },
-        tag_mappings = { insert_tag = "" },
+        -- This is actually <C-i>; terminal shenanigans
+        note_mappings = { insert_link = "<Tab>" },
+        tag_mappings = { insert_tag = "<Tab>" },
       },
       ui = {
         enable = false,
