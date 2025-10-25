@@ -55,6 +55,7 @@ vim.api.nvim_create_autocmd("VimEnter", {
   group = augroup,
   callback = function()
     roll_colorscheme()
+    vim.g.colorscheme = "catppuccin-frappe"
     set_colorscheme()
   end,
 })
