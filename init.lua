@@ -536,6 +536,7 @@ require("lazy").setup({
       },
       legacy_commands = false,
     },
+    init = function() vim.env.ZK_NOTEBOOK_DIR = vim.fs.joinpath(vim.fn.getcwd(), "Experiments", "zk") end,
   },
 
   {
