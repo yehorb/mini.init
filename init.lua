@@ -448,6 +448,7 @@ require("lazy").setup({
       })
       vim.lsp.enable "nixd"
       vim.lsp.enable "harper_ls"
+      vim.lsp.enable "ltex_plus"
     end,
     event = { "BufReadPost", "BufNewFile", "BufWritePre", "VeryLazy" },
   },
