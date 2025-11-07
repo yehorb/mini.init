@@ -521,7 +521,7 @@ require("lazy").setup({
           path = vim.fs.normalize "~/Documents/Obsidian Vault",
         },
       },
-      disable_frontmatter = true,
+      frontmatter = { enabled = false },
       picker = {
         name = "snacks.pick",
         -- This is actually <C-i>; terminal shenanigans
